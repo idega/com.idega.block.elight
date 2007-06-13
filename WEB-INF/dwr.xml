@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://www.getahead.ltd.uk/dwr//dwr20.dtd">
+
+<dwr>
+	<allow>
+	
+    	<!-- dwr doesn't support spring so easily yet? we use jsf now, which is actually using spring ;] -->
+    	<create creator="jsf" javascript="ElightSearchResults" scope="session">
+	    	<param name="managedBeanName" value="elightSearchResults" />
+	    	<param name="class" value="com.idega.block.elight.presentation.beans.ElightSearchResults" />
+    	</create>
+    	<!--
+      	<create creator="spring" javascript="elightSearchResults" scope="session">
+	    	<param name="beanName" value="elightSearchResults"/>
+    	</create>
+		-->
+    	<convert converter="bean" match="com.idega.block.elight.presentation.beans.ElightSearchResult" />
+		
+	</allow>
+	<signatures>
+		<![CDATA[
+			import java.util.List;
+			import java.util.Collection;
+			import com.idega.block.elight.presentation.beans.ElightSearchResult;
+  			import com.idega.block.elight.presentation.beans.ElightSearchResults;
+
+			Collection<List<ElightSearchResult>> ElightSearchResults.search(String);
+		]]>
+	</signatures>
+</dwr>
