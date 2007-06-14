@@ -24,10 +24,11 @@ import com.idega.webface.WFDivision;
 
 /**
  * 
- * 
- * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
- * 
+ * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
+ * @version $Revision: 1.2 $
+ *
+ * Last modified: $Date: 2007/06/14 18:56:23 $ by $Author: civilis $
+ *
  */
 public class ELight extends IWBaseComponent {
 	
@@ -38,7 +39,8 @@ public class ELight extends IWBaseComponent {
 	
 	private static final String ELIGHT_SEARCH_BUTTON_SRC = "images/elightSearchButton.png";
 	
-	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.elight"; 
+	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.elight";
+	private List plugins_used; 
 	
 	
 	public ELight() {
@@ -151,6 +153,6 @@ public class ELight extends IWBaseComponent {
 	}
 	
 	public void setPluginsUsed(List plugins_used) {
-		System.out.println("plugins used: "+plugins_used);
+		this.plugins_used = plugins_used;
 	}
 }
