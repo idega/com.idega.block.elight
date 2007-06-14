@@ -40,7 +40,7 @@
                             <key>
                               <name>iw_method_param_desc</name>
                               <type>java.lang.String</type>
-                              <value>Plugins used</value>
+                              <value>ElightPluginsUsed</value>
                             </key>
                           </map>
                         </value>
@@ -58,7 +58,7 @@
                 <key>
                   <name>iw_method_description</name>
                   <type>java.lang.String</type>
-                  <value>Plugins used</value>
+                  <value>Elight Plugins Used</value>
                 </key>
                 <key>
                   <name>iw_method_identifier</name>
