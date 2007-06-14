@@ -3,8 +3,6 @@ if(ElightResult == null) var ElightResult = function() {};
 
 /* ------ elight ------ */
 
-//Map<String, List<ElightSearchResult>>
-
 Elight.getSearchResults = function(data) {
 	
 	var container = $('elightResults');
@@ -216,7 +214,6 @@ window.addEvent('domready', function() {
 
 		e.stop();
 	});
-	
 	
 	var scrolly = new Scroller('elightResults', {area: 80, velocity: 0.7});
 	
