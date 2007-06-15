@@ -1,7 +1,11 @@
 package com.idega.block.elight.presentation;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.application.Application;
@@ -16,6 +20,7 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import com.idega.block.web2.business.Web2Business;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
+import com.idega.core.builder.business.ICBuilderConstants;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
@@ -25,22 +30,31 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/06/14 18:56:23 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/15 13:21:49 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
 	
 	private static final String elight_id = "elight";
 	private static final String elight_input_id = "elightInput";
+	private static final String elight_output_id = "elightOutput";
 	private static final String elight_search_button_id = "elightSearchButton";
 	private static final String elight_search_input_id = "elightSearchInput";
+	private static final String elight_input_text_id = "elightInputText";
+	private static final String elight_results_id = "elightResults";
+	
 	
 	private static final String ELIGHT_SEARCH_BUTTON_SRC = "images/elightSearchButton.png";
+	private static final String ELIGHT_WORKING_SRC = "images/elightWorking.gif";
+	private static final String ELIGHT_JS_SRC = "javascript/elight.js";
+	private static final String ELIGHT__SEARCH_RESULTS_JS_SRC = "/dwr/interface/ElightSearchResults.js";
+	private static final String DWR_ENGINE_SRC = "/dwr/engine.js";
+	private static final String ELIGHT_CSS_SRC = "style/elight.css";
 	
 	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.elight";
-	private List plugins_used; 
+	private List<String> plugins_used; 
 	
 	
 	public ELight() {
@@ -60,13 +74,13 @@ public class ELight extends IWBaseComponent {
 		input_division.setId(elight_input_id);
 		
 		WFDivision output_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		output_division.setId("elightOutput");
+		output_division.setId(elight_output_id);
 		
 		WFDivision input_text_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		input_text_division.setId("elightInputText");
+		input_text_division.setId(elight_input_text_id);
 		
 		WFDivision results_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		results_division.setId("elightResults");
+		results_division.setId(elight_results_id);
 		
 		HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
 		search_button.setId(elight_search_button_id);
@@ -118,6 +132,8 @@ public class ELight extends IWBaseComponent {
 		}
 	}
 	
+	
+	
 	protected void addClientResources(FacesContext context) {
 		
 		IWMainApplication iwma = IWMainApplication.getIWMainApplication(context);
@@ -130,20 +146,23 @@ public class ELight extends IWBaseComponent {
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToMootoolsLib());
 				
 				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString("javascript/elight.js"));
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, "/dwr/interface/ElightSearchResults.js");
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, "/dwr/engine.js");
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, ELIGHT__SEARCH_RESULTS_JS_SRC);
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DWR_ENGINE_SRC);
 				
 				resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, 
 						new StringBuilder("var elight_working_uri = '")
-						.append(bundle.getImageURI("images/elightWorking.gif"))
+						.append(bundle.getImageURI(ELIGHT_WORKING_SRC))
 						.append("';\n")
 						.append("var elight_search_uri = '")
 						.append(bundle.getImageURI(ELIGHT_SEARCH_BUTTON_SRC))
-						.append("';")
+						.append("';\n")
+						.append("var elight_pu_param = new Array(")
+						.append(constructPluginsUsedArrayValues(plugins_used))
+						.append(");")
 						.toString()
 				);
-				resource.addStyleSheet(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString("style/elight.css"));
+				resource.addStyleSheet(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_CSS_SRC));
 				
 			} catch (RemoteException e) {
 				e.printStackTrace();
@@ -152,7 +171,25 @@ public class ELight extends IWBaseComponent {
 		}
 	}
 	
-	public void setPluginsUsed(List plugins_used) {
+	public void setPluginsUsed(List<String> plugins_used) {
 		this.plugins_used = plugins_used;
+	}
+	
+	private String constructPluginsUsedArrayValues(List<String> plugins_used) {
+	
+		if(plugins_used == null || plugins_used.isEmpty())
+			return "";
+		
+		StringBuilder constructed = new StringBuilder();
+		
+		for (Iterator<String> iter = plugins_used.iterator(); iter.hasNext();) {
+			
+			constructed.append("'").append(iter.next()).append("'");
+			
+			if(iter.hasNext())
+				constructed.append(", ");
+		}
+		
+		return constructed.toString();
 	}
 }

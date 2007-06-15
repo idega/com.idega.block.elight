@@ -15,9 +15,9 @@ import com.idega.presentation.ui.util.AbstractChooserBlock;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/06/14 18:56:23 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/15 13:21:48 $ by $Author: civilis $
  *
  */
 public class ElightPluginsUsedBlock extends AbstractChooserBlock {
@@ -61,19 +61,20 @@ public class ElightPluginsUsedBlock extends AbstractChooserBlock {
 	protected void addClientResources() {
 		add(
 			new StringBuilder("<script type=\"text/javascript\">")
+			.append("var elight_chooser_helper = new ChooserHelper();")
 			.append("function elightChoosePlugin(checkbox) {")
 			.append("if(!checkbox || checkbox == null)")
 			.append("return;")
 			.append("if(checkbox.checked) {")
-			.append("addAdvancedProperty(checkbox.id, checkbox.id);")
+			.append("elight_chooser_helper.addAdvancedProperty(checkbox.id, checkbox.id);")
 			.append("} else {")
-			.append("removeAdvancedProperty(checkbox.id);")
-			.append("}} console.log('shit man');")
+			.append("elight_chooser_helper.removeAdvancedProperty(checkbox.id);")
+			.append("}}")
 			.append("var elight_checkboxes = document.getElementsByName('elightPluginUsedCheckbox');")
 			.append("if(elight_checkboxes &amp;&amp; elight_checkboxes != null)")
 			.append("for(var index=0; index &lt; elight_checkboxes.length; index++)")
 			.append("if(elight_checkboxes[index].checked)")
-			.append("addAdvancedProperty(elight_checkboxes[index].id, elight_checkboxes[index].id);")
+			.append("elight_chooser_helper.addAdvancedProperty(elight_checkboxes[index].id, elight_checkboxes[index].id);")
 			.append("</script>")
 			.toString()
 		);
