@@ -24,7 +24,7 @@
 			import com.idega.block.elight.presentation.beans.ElightSearchResult;
   			import com.idega.block.elight.presentation.beans.ElightSearchResults;
 
-			Collection<List<ElightSearchResult>> ElightSearchResults.search(String);
+			Collection<List<ElightSearchResult>> ElightSearchResults.search(String, List<String>);
 		]]>
 	</signatures>
 </dwr>

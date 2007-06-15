@@ -191,7 +191,6 @@ window.addEvent('domready', function() {
 
 	});
 
-
 	
 	var elight_results_slide = new Fx.Slide('elightResults', {mode: 'vertical'});
 	elight_results_slide.hide();
@@ -205,7 +204,7 @@ window.addEvent('domready', function() {
 			
 		$('elightSearchButton').src = elight_working_uri;
 		
-		ElightSearchResults.search($('elightSearchInput').value, Elight.getSearchResults);
+		ElightSearchResults.search($('elightSearchInput').value, elight_pu_param, Elight.getSearchResults);
 			
 		e = new Event(e);
 		

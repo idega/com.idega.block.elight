@@ -39,7 +39,7 @@ public class ElightSearchResults implements Serializable {
 	private static final String contents_xml_part2 = "</content>";
 	
 	
-	public Collection<List<ElightSearchResult>> search(String query) {
+	public Collection<List<ElightSearchResult>> search(String query, List<String> plugins_used) {
 		
 		IWContext iwc = IWContext.getIWContext(FacesContext.getCurrentInstance());
 		
@@ -50,18 +50,6 @@ public class ElightSearchResults implements Serializable {
 //			TODO: return than nothing found
 			return getMessageToTheUser("None plugins found");
 		}
-		
-//		TODO: filter plugins to use, maybe set through js and get as parameter
-			
-			/*if (getSearchPluginsToUse() != null) {
-				String searchClass = searchPlugin.getClass().getName();
-				String className  = searchClass.substring(searchClass.lastIndexOf('.') + 1);
-				String pluginNamesOrClasses = getSearchPluginsToUse();
-				if ( (pluginNamesOrClasses.indexOf(className) < 0) && (pluginNamesOrClasses.indexOf(searchClass) < 0) ) {
-					continue;
-				}
-			}*/
-		
 		
 //		doing just simple search right? at least for now
 		Map query_map = new HashMap();
@@ -79,58 +67,71 @@ public class ElightSearchResults implements Serializable {
 			
 		for (SearchPlugin plugin : plugins) {
 			
-			plugin = configureSearchPlugin(plugin);
-			
-			//doing just simple search right? at least for now
-			if(!plugin.getSupportsSimpleSearch())
+			if(plugins_used != null && !plugins_used.isEmpty() && !plugins_used.contains(plugin.getSearchIdentifier()))
 				continue;
+			
+			try {
+				
+				plugin = configureSearchPlugin(plugin);
+				
+				//doing just simple search right? at least for now
+				if(!plugin.getSupportsSimpleSearch())
+					continue;
 
-			Search search = plugin.createSearch(search_query);
-			
-			Collection<SearchResult> results = search.getSearchResults();
-			
-			if(results == null || results.isEmpty()) {
-//				TODO: maybe add plugin type still and say no results or smth
-				continue;
-			}
-			
-			String search_name = plugin.getSearchName();
-			
-			for (SearchResult result : results) {
+				Search search = plugin.createSearch(search_query);
 				
-				ElightSearchResult elight_result = new ElightSearchResult();
+				Collection<SearchResult> results = search.getSearchResults();
 				
-				elight_result.setTitle(result.getSearchResultName());
-				elight_result.setUrl(result.getSearchResultURI());
-				
-				try {
-					
-					elight_result.setContents(doc_builder.parse(new StringInputStream(
-							new StringBuilder(contents_xml_part1)
-							.append(result.getSearchResultAbstract())
-							.append(contents_xml_part2)
-							.toString()
-					)));
-					
-				} catch (Exception e) {
-					// TODO: log
+				if(results == null || results.isEmpty()) {
+//					TODO: maybe add plugin type still and say no results or smth
 					continue;
 				}
 				
-				elight_result.setExtraInfo(result.getSearchResultExtraInformation());
-				elight_result.setTypeLabel(search_name);
+				String search_name = plugin.getSearchName();
 				
-				putResultOnType(typed_search_results, result.getSearchResultType(), elight_result);
+				for (SearchResult result : results) {
+					
+					ElightSearchResult elight_result = new ElightSearchResult();
+					
+					elight_result.setTitle(result.getSearchResultName());
+					elight_result.setUrl(result.getSearchResultURI());
+					
+					try {
+						
+						elight_result.setContents(doc_builder.parse(new StringInputStream(
+								new StringBuilder(contents_xml_part1)
+								.append(result.getSearchResultAbstract())
+								.append(contents_xml_part2)
+								.toString()
+						)));
+						
+					} catch (Exception e) {
+						// TODO: log
+						e.printStackTrace();
+						continue;
+					}
+					
+					elight_result.setExtraInfo(result.getSearchResultExtraInformation());
+					elight_result.setTypeLabel(search_name);
+					
+					putResultOnType(typed_search_results, plugin.getSearchIdentifier(), elight_result);
+					
+	/*				Map extraParameters = result.getSearchResultAttributes();
+					// todo group by type
+					String type = result.getSearchResultType();
+	*/
+//					Collection rowElements = plugin.getExtraRowElements(result, iwrb);
+				}
 				
-/*				Map extraParameters = result.getSearchResultAttributes();
-				// todo group by type
-				String type = result.getSearchResultType();
-*/
-//				Collection rowElements = plugin.getExtraRowElements(result, iwrb);
+			} catch (Exception e) {
+				// TODO: log
+				e.printStackTrace();
+				continue;
 			}
 		}
 		
-		System.out.println("returning results: "+typed_search_results.values());
+		if(typed_search_results.values().isEmpty())
+			return getMessageToTheUser("No results found");
 		
 		return typed_search_results.values();
 	}
