@@ -10,9 +10,9 @@ import com.idega.presentation.ui.AbstractChooser;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2007/06/14 18:56:23 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/15 13:20:26 $ by $Author: civilis $
  *
  */
 public class ElightPluginsUsedChooser extends AbstractChooser {
@@ -39,5 +39,10 @@ public class ElightPluginsUsedChooser extends AbstractChooser {
 	
 	public void setValues(List<String> values) {
 		this.values = values;
+	}
+	
+	@Override
+	protected String getChooserHelperVarName() {
+		return "elight_chooser_helper";
 	}
 }
