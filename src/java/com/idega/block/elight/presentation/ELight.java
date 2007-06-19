@@ -1,10 +1,7 @@
 package com.idega.block.elight.presentation;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,7 +17,6 @@ import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 import com.idega.block.web2.business.Web2Business;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
-import com.idega.core.builder.business.ICBuilderConstants;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
@@ -30,9 +26,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/06/15 13:21:49 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/19 13:39:59 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -54,8 +50,8 @@ public class ELight extends IWBaseComponent {
 	private static final String ELIGHT_CSS_SRC = "style/elight.css";
 	
 	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.elight";
-	private List<String> plugins_used; 
-	
+	private List<String> plugins_used;
+	private boolean hidden = true;
 	
 	public ELight() {
 		super();
@@ -159,7 +155,10 @@ public class ELight extends IWBaseComponent {
 						.append("';\n")
 						.append("var elight_pu_param = new Array(")
 						.append(constructPluginsUsedArrayValues(plugins_used))
-						.append(");")
+						.append(");\n")
+						.append("var elight_hidden = ")
+						.append(hidden ? "true" : "false")
+						.append(";")
 						.toString()
 				);
 				resource.addStyleSheet(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_CSS_SRC));
@@ -191,5 +190,9 @@ public class ELight extends IWBaseComponent {
 		}
 		
 		return constructed.toString();
+	}
+	
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }
