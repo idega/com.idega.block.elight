@@ -10,6 +10,8 @@ Elight.RESULTS_ID 					= 'elightResults';
 Elight.SEARCH_INPUT_ID 				= 'elightSearchInput';
 Elight.SLIDED_OUT					= 1;
 Elight.SLIDED_IN					= 2;
+Elight.WORD_WRAP_TITLE				= 30;
+Elight.WORD_WRAP_URL				= 50;
 
 Elight.getSearchResults = function(data) {
 
@@ -91,7 +93,7 @@ ElightResult.prototype.addTitle = function(title) {
 	this.title = title;
 
 	if(this.title && this.title != null)
-		this.title = this.title.wordWrap(30, " ", true);
+		this.title = this.title.wordWrap(Elight.WORD_WRAP_TITLE, " ", true);
 }
 
 ElightResult.prototype.addContents = function(contents) {
@@ -103,7 +105,7 @@ ElightResult.prototype.addUrl = function(url) {
 	this.url = url;
 	
 	if(this.url && this.url != null)
-		this.url = this.url.wordWrap(40, " ", true);
+		this.url = this.url.wordWrap(Elight.WORD_WRAP_URL, " ", true);
 		
 }
 
@@ -170,13 +172,13 @@ window.addEvent('domready', function() {
 	
 	var elight_horizontal_slide = null;
 	
-	if(elight_hidden)
+	if(elight_hidden) {
 		elight_horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300}).hide();
-	else
+		elight_horizontal_slide.state = Elight.SLIDED_OUT;
+	} else {
 		elight_horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300});
-		
-	elight_horizontal_slide.state = Elight.SLIDED_OUT;
-//	elight_horizontal_slide.state = Elight.SLIDED_IN;
+		elight_horizontal_slide.state = Elight.SLIDED_IN;
+	}
 
 	$(Elight.SEARCH_BUTTON_ID).addEvent('click', function(e) {
 		e = new Event(e);

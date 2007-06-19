@@ -12,8 +12,6 @@
 
 #elightSearchInput {
 	width: 150px;
-	border-style: solid;
-	border-color: black;
 	background-color: #FFEBF1;
 }
 
@@ -26,9 +24,13 @@
 
 }
 
+#elightResults, #elightSearchInput {
+	
+	border: 1px solid #A34B59;
+}
+
 #elightResults {
 	background: #FFF9FA;
-	border: 1px solid black;
 	height: 300px;
 	width: 300px;
 	border-style: solid;
@@ -39,7 +41,7 @@
 
 .elightResult {
 	font-family: Arial,Helvetica,Sans-serif; 
-	font-size: 10pt;
+	font-size: 9pt;
 	padding-bottom: 5px; 
 	padding-top: 5px;
 	
@@ -50,7 +52,7 @@
 	background-color: #F7EFEF;
 }
 .elightTitle, .elightTitle a {
-	font-size: 10.5pt;
+	font-size: 9.5pt;
 	font-weight: bolder;
 	text-decoration: underline;
 	color: black;
@@ -62,6 +64,7 @@
 }
 
 .elightUrl {
+	font-size: 8.5pt;
 	color: green;
 }
 
