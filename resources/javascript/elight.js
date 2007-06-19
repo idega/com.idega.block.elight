@@ -168,9 +168,13 @@ ElightResult.prototype.getResultDOM = function() {
 
 window.addEvent('domready', function() {
 	
-
+	var elight_horizontal_slide = null;
 	
-	var elight_horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300}).hide();
+	if(elight_hidden)
+		elight_horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300}).hide();
+	else
+		elight_horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300});
+		
 	elight_horizontal_slide.state = Elight.SLIDED_OUT;
 //	elight_horizontal_slide.state = Elight.SLIDED_IN;
 
@@ -228,9 +232,6 @@ window.addEvent('domready', function() {
 	var elight_top_position = getAbsoluteTop(Elight.SEARCH_BUTTON_ID);
 	var elight_left_position = getAbsoluteLeft(Elight.SEARCH_BUTTON_ID);
 	
-	console.log(elight_top_position);
-	console.log(elight_left_position);
-	
 	var elight_input_div = $(Elight.INPUT_ID).getElementsByTagName('div')[0];
 	var elight_output_div = $(Elight.OUTPUT_ID).getElementsByTagName('div')[0];
 
@@ -239,5 +240,9 @@ window.addEvent('domready', function() {
 	
 	elight_output_div.style.top = (elight_top_position + 8+25)+"px";
 	elight_output_div.style.left = (elight_left_position + 40)+"px";
-
+	
+	if(isSafariBrowser()) {
+	
+		$(Elight.SEARCH_INPUT_ID).type = 'search';
+	}
 });
