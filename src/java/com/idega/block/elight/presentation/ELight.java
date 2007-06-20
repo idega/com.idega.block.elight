@@ -26,9 +26,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2007/06/19 13:39:59 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/20 17:30:00 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -158,7 +158,10 @@ public class ELight extends IWBaseComponent {
 						.append(");\n")
 						.append("var elight_hidden = ")
 						.append(hidden ? "true" : "false")
-						.append(";")
+						.append(";\n")
+						.append("var elight_site_img_uri = '")
+						.append(bundle.getImageURI("images/Site16.png"))
+						.append("';")
 						.toString()
 				);
 				resource.addStyleSheet(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_CSS_SRC));
