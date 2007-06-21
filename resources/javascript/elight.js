@@ -265,7 +265,6 @@ window.addEvent('domready', function() {
 		e = new Event(e);
 		
 		Elight.results_slide.state = Elight.SLIDED_IN;
-		console.log('sliding in');
 		Elight.results_slidein();
 
 		e.stop();
