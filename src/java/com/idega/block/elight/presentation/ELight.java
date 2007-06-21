@@ -15,8 +15,7 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 import com.idega.block.web2.business.Web2Business;
-import com.idega.business.IBOLookup;
-import com.idega.business.IBOLookupException;
+import com.idega.business.SpringBeanLookup;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
@@ -26,9 +25,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2007/06/21 13:06:46 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/21 18:52:16 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -130,16 +129,9 @@ public class ELight extends IWBaseComponent {
 	}
 	
 	protected Web2Business getWeb2Service(IWApplicationContext iwc) {
-		try {
-			return (Web2Business) IBOLookup.getServiceInstance(iwc, Web2Business.class);
-		} catch (IBOLookupException e) {
-			e.printStackTrace();
-//			TODO log
-			return null;
-		}
+		
+		return (Web2Business) SpringBeanLookup.getInstance().getSpringBean(iwc, Web2Business.class);
 	}
-	
-	
 	
 	protected void addClientResources(FacesContext context) {
 		
