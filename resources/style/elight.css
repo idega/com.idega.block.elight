@@ -39,7 +39,7 @@
 }
 
 #elightResults {
-	background: #131313 url(../images/greyfadingscaled.png) repeat-x top fixed;
+	background: #131313 url(../images/greyfadingscaled.png) repeat-x top;
 	
 	height: 300px;
 	width: 300px;
