@@ -24,7 +24,13 @@
 	left: 40px;
 	top: 33px;
 	display: inline;
+}
 
+#elightResultsAndPointer {
+	background-image: url(../images/as_pointer.gif);
+	background-position: 30px top;
+	background-repeat: no-repeat;
+	padding: 10px 0 0 0;
 }
 
 #elightResults, #elightSearchInput {
@@ -82,9 +88,11 @@ A:hover > div.elightResult {
 
 .elightLabelContainer {
 	
+	background: #131313 url(../images/greyfadingscaledsmall.png) repeat-x;
 	text-align: center;
 	font-size: 11pt;
 	font-weight: bold;
+	color: #ccc;
 	padding-top: 5px;
 }
 

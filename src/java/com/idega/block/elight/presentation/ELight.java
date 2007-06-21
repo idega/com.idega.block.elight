@@ -26,9 +26,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2007/06/20 17:30:00 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/21 13:06:46 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -40,10 +40,13 @@ public class ELight extends IWBaseComponent {
 	private static final String elight_search_input_id = "elightSearchInput";
 	private static final String elight_input_text_id = "elightInputText";
 	private static final String elight_results_id = "elightResults";
-	
+	private static final String elight_pointer_id = "elightPointer";
+	private static final String elight_results_and_pointer_id = "elightResultsAndPointer";
 	
 	private static final String ELIGHT_SEARCH_BUTTON_SRC = "images/elightSearchButton.png";
 	private static final String ELIGHT_WORKING_SRC = "images/elightWorking.gif";
+	private static final String ELIGHT_SITE_ICON = "images/Site16.png";
+	
 	private static final String ELIGHT_JS_SRC = "javascript/elight.js";
 	private static final String ELIGHT__SEARCH_RESULTS_JS_SRC = "/dwr/interface/ElightSearchResults.js";
 	private static final String DWR_ENGINE_SRC = "/dwr/engine.js";
@@ -75,8 +78,14 @@ public class ELight extends IWBaseComponent {
 		WFDivision input_text_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		input_text_division.setId(elight_input_text_id);
 		
+		WFDivision pointer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		pointer_division.setId(elight_pointer_id);
+		
 		WFDivision results_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		results_division.setId(elight_results_id);
+		
+		WFDivision results_and_pointer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		results_and_pointer_division.setId(elight_results_and_pointer_id);
 		
 		HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
 		search_button.setId(elight_search_button_id);
@@ -89,7 +98,9 @@ public class ELight extends IWBaseComponent {
 		input_text_division.add(search_input);
 		input_division.add(input_text_division);
 		
-		output_division.add(results_division);
+		results_and_pointer_division.add(pointer_division);
+		results_and_pointer_division.add(results_division);
+		output_division.add(results_and_pointer_division);
 		
 		elight_div.add(input_division);
 		 elight_div.add(output_division);
@@ -160,7 +171,7 @@ public class ELight extends IWBaseComponent {
 						.append(hidden ? "true" : "false")
 						.append(";\n")
 						.append("var elight_site_img_uri = '")
-						.append(bundle.getImageURI("images/Site16.png"))
+						.append(bundle.getImageURI(ELIGHT_SITE_ICON))
 						.append("';")
 						.toString()
 				);

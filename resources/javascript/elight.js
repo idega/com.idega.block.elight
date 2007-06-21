@@ -8,22 +8,21 @@ Elight.INPUT_ID 					= 'elightInput';
 Elight.INPUT_TEXT_ID				= 'elightInputText';
 Elight.OUTPUT_ID 					= 'elightOutput';
 Elight.RESULTS_ID 					= 'elightResults';
+Elight.RESULTS_AND_POINTER_ID 		= 'elightResultsAndPointer';
 Elight.SEARCH_INPUT_ID 				= 'elightSearchInput';
 Elight.SLIDED_OUT					= 1;
 Elight.SLIDED_IN					= 2;
 Elight.WORD_WRAP_TITLE				= 30;
-Elight.WORD_WRAP_URL				= 50;
+Elight.WORD_WRAP_URL				= 45;
 Elight.CROP_END_TITLE				= 30;
-Elight.CROP_END_URL					= 45;
+Elight.CROP_END_URL					= 40;
 Elight.elightSearchInput_WIDTH1		= '150px';
 Elight.elightSearchInput_WIDTH2		= '290px';
-
 Elight.MOUSE_OVER 					= false;
 
 Elight.getSearchResults = function(data) {
 
 	var container = $(Elight.RESULTS_ID);
-	
 	removeChildren(container);
 	
 	if(!data || data == null || data.length == 0) {
@@ -244,7 +243,8 @@ window.addEvent('domready', function() {
 		e.stop();
 	});
 	
-	Elight.results_slide = new Fx.Slide(Elight.RESULTS_ID, {mode: 'vertical'}).hide();
+	Elight.results_slide = new Fx.Slide(Elight.RESULTS_AND_POINTER_ID, {mode: 'vertical'}).hide();
+
 	Elight.results_slide.state = Elight.SLIDED_OUT;
 //	Elight.results_slide.state = Elight.SLIDED_IN;
 
