@@ -15,6 +15,8 @@ Elight.WORD_WRAP_TITLE				= 30;
 Elight.WORD_WRAP_URL				= 50;
 Elight.CROP_END_TITLE				= 30;
 Elight.CROP_END_URL					= 45;
+Elight.elightSearchInput_WIDTH1		= '150px';
+Elight.elightSearchInput_WIDTH2		= '290px';
 
 Elight.MOUSE_OVER 					= false;
 
@@ -110,8 +112,26 @@ Elight.results_slideout = function() {
 
 Elight.results_slidein = function() {
 
-	$(Elight.RESULTS_ID).style.overflow = 'auto';
+	removeChildren($(Elight.RESULTS_ID));
 	Elight.results_slide.slideIn();
+	$(Elight.RESULTS_ID).style.overflow = 'auto';
+}
+
+Elight.slideout = function() {
+
+		if(Elight.horizontal_slide.state == Elight.SLIDED_IN) {
+			
+			Elight.horizontal_slide.state = Elight.SLIDED_OUT;
+			Elight.horizontal_slide.slideOut();
+		}
+		
+		if(Elight.results_slide.state == Elight.SLIDED_IN) {
+
+			Elight.results_slide.state = Elight.SLIDED_OUT;		
+			Elight.results_slideout();
+
+			$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH1;
+		}
 }
 
 /* ------ elight ---(END)--- */
@@ -133,10 +153,6 @@ ElightResult.prototype.addContents = function(contents) {
 ElightResult.prototype.addUrl = function(url) {
 
 	this.url = url;
-	
-	if(this.url && this.url != null)
-//		this.url = this.url.wordWrap(Elight.WORD_WRAP_URL, " ", true);
-		this.url = this.url.cropEnd(Elight.CROP_END_URL, "...");
 }
 
 ElightResult.prototype.getGenericResultObject = function() {
@@ -188,28 +204,14 @@ ElightResult.prototype.getResultDOM = function() {
 		result_dom = link;
 	}
 	
-	if(this.title && this.title != null) {
-		
-		if(this.url && this.url != null) {
-
-/*			
-			var link = document.createElement('a');
-			link.setAttribute("href", this.url);
-
-			link.appendChild(document.createTextNode(this.title));
-			title_dom.appendChild(link);
-*/			
-			title_dom.appendChild(document.createTextNode(this.title));
-		
-		} else
-			title_dom.appendChild(document.createTextNode(this.title));
-	}
+	if(this.title && this.title != null)
+		title_dom.appendChild(document.createTextNode(this.title));
 		
 	if(this.contents && this.contents != null)
 		insertNodesToContainer(this.contents, contents_dom);
 		
 	if(this.url && this.url != null)
-		url_dom.appendChild(document.createTextNode(this.url));
+		url_dom.appendChild(document.createTextNode(this.url.cropEnd(Elight.CROP_END_URL, "...")));
 	
 	return result_dom;
 }
@@ -218,7 +220,7 @@ ElightResult.prototype.getResultDOM = function() {
 
 window.addEvent('domready', function() {
 	
-	if(elight_hidden && false) {
+	if(elight_hidden) {
 		Elight.horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300}).hide();
 		Elight.horizontal_slide.state = Elight.SLIDED_OUT;
 	} else {
@@ -228,30 +230,23 @@ window.addEvent('domready', function() {
 
 	$(Elight.SEARCH_BUTTON_ID).addEvent('click', function(e) {
 		e = new Event(e);
-		
-		$(Elight.SEARCH_INPUT_ID).focus();
-		
-		if(Elight.horizontal_slide.state == Elight.SLIDED_IN) {
-			
-			Elight.horizontal_slide.state = Elight.SLIDED_OUT;
-			Elight.horizontal_slide.slideOut();
-			
-		} else {
 
+		if(Elight.horizontal_slide.state == Elight.SLIDED_OUT) {
+		
+			$(Elight.SEARCH_INPUT_ID).focus();
 			Elight.horizontal_slide.state = Elight.SLIDED_IN;
 			Elight.horizontal_slide.slideIn();
+			
+		} else {
+			Elight.slideout();
 		}
-		
-		if(Elight.results_slide.state == Elight.SLIDED_IN)
-			Elight.results_slideout();
 
 		e.stop();
-
 	});
 	
-	Elight.results_slide = new Fx.Slide(Elight.RESULTS_ID, {mode: 'vertical'});//.hide();
-//	Elight.results_slide.state = Elight.SLIDED_OUT;
-	Elight.results_slide.state = Elight.SLIDED_IN;
+	Elight.results_slide = new Fx.Slide(Elight.RESULTS_ID, {mode: 'vertical'}).hide();
+	Elight.results_slide.state = Elight.SLIDED_OUT;
+//	Elight.results_slide.state = Elight.SLIDED_IN;
 
 	$(Elight.SEARCH_INPUT_ID).addEvent('keypress', function(e) {
 		
@@ -266,6 +261,8 @@ window.addEvent('domready', function() {
 		
 		Elight.results_slide.state = Elight.SLIDED_IN;
 		Elight.results_slidein();
+		
+		$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH2;
 
 		e.stop();
 	});
@@ -307,11 +304,6 @@ window.addEvent('click', function() {
 
 	if(!Elight.MOUSE_OVER) {
 	
-		if(Elight.horizontal_slide.state == Elight.SLIDED_IN) {
-			
-			Elight.horizontal_slide.state = Elight.SLIDED_OUT;
-			Elight.horizontal_slide.slideOut();
-			Elight.results_slideout();
-		}
+		Elight.slideout();
 	}
 });

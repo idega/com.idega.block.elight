@@ -12,9 +12,7 @@
 
 #elightSearchInput {
 	width: 150px;
-	background-color: white;
-	background-image: url(../images/Graphite20.png); 
-	background-repeat: repeat-x;
+	background: #131313 url(../images/greyfadingscaledsmall.png) repeat-x;
 	color: white;
 	padding-left: 3px;
 	padding-right: 3px;
@@ -35,7 +33,7 @@
 }
 
 #elightResults {
-	background-color: #333;
+	background: #131313 url(../images/greyfadingscaled.png) repeat-x top fixed;
 	
 	height: 300px;
 	width: 300px;
@@ -48,8 +46,8 @@ A > div.elightResult {
 }
 
 A:hover > div.elightResult {
-	
-	background-color: #1B5CCD;
+
+	background: #1d64f0 url(../images/bluefading.png) repeat-x top;	
 	cursor: default;
 }
 
