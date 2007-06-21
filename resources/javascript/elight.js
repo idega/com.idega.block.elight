@@ -130,7 +130,7 @@ Elight.slideout = function() {
 			Elight.results_slide.state = Elight.SLIDED_OUT;		
 			Elight.results_slideout();
 
-			$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH1;
+//			$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH1;
 		}
 }
 
@@ -262,7 +262,7 @@ window.addEvent('domready', function() {
 		Elight.results_slide.state = Elight.SLIDED_IN;
 		Elight.results_slidein();
 		
-		$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH2;
+//		$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH2;
 
 		e.stop();
 	});
@@ -290,6 +290,7 @@ window.addEvent('domready', function() {
 	
 		$(Elight.SEARCH_INPUT_ID).type = 'search';
 		$(Elight.SEARCH_INPUT_ID).style.color = 'black';
+		$(Elight.SEARCH_INPUT_ID).style.backgroundColor = 'white';
 	}
 	
 	$(Elight.SEARCH_BUTTON_ID).addEvent('mouseover', Elight.mouseover);
