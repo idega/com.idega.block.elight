@@ -22,7 +22,7 @@ import com.idega.data.StringInputStream;
 import com.idega.presentation.IWContext;
 
 /**
- * 
+ * application scope
  * 
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
  * @version 1.0
@@ -34,7 +34,7 @@ public class ElightSearchResults implements Serializable {
 	
 	private String searchParameterName = Searcher.DEFAULT_SEARCH_PARAMETER_NAME;
 	
-	private DocumentBuilder doc_builder;
+	private DocumentBuilderFactory factory;
 	private static final String contents_xml_part1 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><content>";
 	private static final String contents_xml_part2 = "</content>";
 	
@@ -90,6 +90,20 @@ public class ElightSearchResults implements Serializable {
 				String search_name = plugin.getSearchName();
 				
 				for (SearchResult result : results) {
+					
+					if(plugin.getSearchIdentifier().equals("ContentSearch")) {
+						
+//						TODO: this is of course temporary, modify content search plugin so it looks at user rights 
+						
+						if(result.getSearchResultURI() != null && 
+							(
+							!result.getSearchResultURI().startsWith("/content/files/public/") && 
+							!result.getSearchResultURI().startsWith("/content/files/users/") &&
+							!result.getSearchResultURI().startsWith("/content/files/groups/")
+							) 
+						)
+							continue;
+					}
 					
 					ElightSearchResult elight_result = new ElightSearchResult();
 					
@@ -148,23 +162,22 @@ public class ElightSearchResults implements Serializable {
 		res_list.add(elight_result);
 	}
 	
-	private DocumentBuilder getDocumentBuilder() {
+	private synchronized DocumentBuilder getDocumentBuilder() {
 		
-		if(doc_builder == null) {
-			
-			try {
+		try {
+			if(factory == null) {
 				
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				factory = DocumentBuilderFactory.newInstance();
 				factory.setNamespaceAware(false);
 				factory.setValidating(false);
-				doc_builder = factory.newDocumentBuilder();
-				
-			} catch (Exception e) {
-				// TODO: log
-				e.printStackTrace();
 			}
+			return factory.newDocumentBuilder();
+			
+		} catch (Exception e) {
+			// TODO: log
+			e.printStackTrace();
+			return null;
 		}
-		return doc_builder;
 	}
 	
 	private List<List<ElightSearchResult>> getMessageToTheUser(String message) {

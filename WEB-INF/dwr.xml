@@ -5,12 +5,13 @@
 	<allow>
 	
     	<!-- dwr doesn't support spring so easily yet? we use jsf now, which is actually using spring ;] -->
-    	<create creator="jsf" javascript="ElightSearchResults" scope="session">
+    	<create creator="jsf" javascript="ElightSearchResults">
 	    	<param name="managedBeanName" value="elightSearchResults" />
 	    	<param name="class" value="com.idega.block.elight.presentation.beans.ElightSearchResults" />
+	    	<include method="search" />
     	</create>
     	<!--
-      	<create creator="spring" javascript="elightSearchResults" scope="session">
+      	<create creator="spring" javascript="elightSearchResults">
 	    	<param name="beanName" value="elightSearchResults"/>
     	</create>
 		-->
