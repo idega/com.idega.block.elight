@@ -12,8 +12,9 @@
 
 #elightSearchInput {
 	width: 150px;
-	background: #131313 url(../images/greyfadingscaledsmall.png) repeat-x;
-	color: white;
+	background: white;
+	color: black;
+	border: 1px solid grey;
 	padding-left: 3px;
 	padding-right: 3px;
 }
@@ -33,7 +34,7 @@
 	padding: 10px 0 0 0;
 }
 
-#elightResults, #elightSearchInput {
+#elightResults {
 	
 	border: 0px solid #A34B59;
 }
@@ -47,8 +48,8 @@
 	overflow: auto;
 }
 
-A > div.elightResult {
-	text-decoration: none;
+#elightResults > a {
+	text-decoration: none !important;
 }
 
 A:hover > div.elightResult {
@@ -83,7 +84,10 @@ A:hover > div.elightResult {
 .elightMessage {
 	
 	padding: 10px;
-	color: #AB1908;
+	margin: 5px;
+	color: white;
+	text-align: center;
+	border: dashed #AB1908 2px;
 }
 
 .elightLabelContainer {

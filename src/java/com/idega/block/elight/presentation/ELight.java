@@ -20,14 +20,15 @@ import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
+import com.idega.util.CoreUtil;
 import com.idega.webface.WFDivision;
 
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  *
- * Last modified: $Date: 2007/06/21 18:52:16 $ by $Author: civilis $
+ * Last modified: $Date: 2007/06/22 16:24:38 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -49,6 +50,8 @@ public class ELight extends IWBaseComponent {
 	private static final String ELIGHT_JS_SRC = "javascript/elight.js";
 	private static final String ELIGHT__SEARCH_RESULTS_JS_SRC = "/dwr/interface/ElightSearchResults.js";
 	private static final String DWR_ENGINE_SRC = "/dwr/engine.js";
+	private static final String CACHE_JS_SRC = "javascript/MonsurCache.js";
+	
 	private static final String ELIGHT_CSS_SRC = "style/elight.css";
 	
 	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.elight";
@@ -56,6 +59,7 @@ public class ELight extends IWBaseComponent {
 	private boolean hidden = true;
 	
 	public ELight() {
+		
 		super();
 		setRendererType(null);
 	}
@@ -92,6 +96,9 @@ public class ELight extends IWBaseComponent {
 		
 		HtmlInputText search_input = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
 		search_input.setId(elight_search_input_id);
+		search_input.setAutocomplete("off");
+		search_input.setAccesskey("s");
+//		TODO: check if accessd. then expand (slidein)
 
 		input_division.add(search_button);
 		input_text_division.add(search_input);
@@ -142,6 +149,7 @@ public class ELight extends IWBaseComponent {
 			
 			try {
 				AddResource resource = AddResourceFactory.getInstance(context);
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreUtil.getCoreBundle().getVirtualPathWithFileNameString(CACHE_JS_SRC));
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToMootoolsLib());
 				
 				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);

@@ -19,9 +19,19 @@ Elight.CROP_END_URL					= 40;
 Elight.elightSearchInput_WIDTH1		= '150px';
 Elight.elightSearchInput_WIDTH2		= '290px';
 Elight.MOUSE_OVER 					= false;
+Elight.RESPONSE_PRIORITY_SENT 		= 0;
+Elight.RESPONSE_PRIORITY_RETRIEVED	= 0;
+Elight.DELAY 						= 1;
 
-Elight.getSearchResults = function(data) {
+Elight.CACHE = new Cache();
 
+Elight.getSearchResults = function(data, response_priority, searched_for) {
+
+	if(response_priority < Elight.RESPONSE_PRIORITY_RETRIEVED)
+		return;
+		
+	Elight.RESPONSE_PRIORITY_RETRIEVED = response_priority;
+	
 	var container = $(Elight.RESULTS_ID);
 	removeChildren(container);
 	
@@ -37,6 +47,18 @@ Elight.getSearchResults = function(data) {
 		return;
 	}
 	
+	Elight.addSearchResults(data, container);
+	Elight.CACHE.setItem(searched_for, data, 	{
+													expirationAbsolute:		null,   
+													expirationSliding:		60,   
+													priority: 				CachePriority.Normal,  
+													callback: 				null
+     											}
+	);  
+}
+
+Elight.addSearchResults = function(data, container) {
+
 	if(data.length > 1)
 		Elight.one_type = false;
 	else
@@ -131,6 +153,44 @@ Elight.slideout = function() {
 
 //			$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH1;
 		}
+}
+Elight.searchfor = function() {
+
+		$(Elight.SEARCH_BUTTON_ID).src = elight_working_uri;
+		var search_for = $(Elight.SEARCH_INPUT_ID).value;
+		
+		if(search_for != null && search_for != "") {
+		
+			var cdata = Elight.CACHE.getItem(search_for);
+			if(cdata != null) {
+				removeChildren($(Elight.RESULTS_ID));		
+				Elight.addSearchResults(cdata, $(Elight.RESULTS_ID));
+			} else {
+			
+				ElightSearchResults.search(search_for, elight_pu_param, 
+			
+					{
+						callback: function(result) {
+							Elight.getSearchResults(result, Elight.RESPONSE_PRIORITY_SENT++, search_for);
+						}
+					}
+				);
+			}
+		} else {
+			$(Elight.SEARCH_BUTTON_ID).src = elight_search_uri;
+		}
+		
+		if(Elight.results_slide.state == Elight.SLIDED_OUT) {
+			Elight.results_slide.state = Elight.SLIDED_IN;
+			Elight.results_slidein();
+		}
+		
+//		$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH2;
+
+		if(search_for != $(Elight.SEARCH_INPUT_ID).value)
+			Elight.searchfor();
+		else
+			Elight.SEARCHING = false;
 }
 
 /* ------ elight ---(END)--- */
@@ -244,28 +304,26 @@ window.addEvent('domready', function() {
 	});
 	
 	Elight.results_slide = new Fx.Slide(Elight.RESULTS_AND_POINTER_ID, {mode: 'vertical'}).hide();
+	
+	Elight.SEARCHING = false;
 
 	Elight.results_slide.state = Elight.SLIDED_OUT;
 //	Elight.results_slide.state = Elight.SLIDED_IN;
+	$(Elight.SEARCH_INPUT_ID).addEvent('keypress', function(e) {
+	
+		if(Elight.SEARCHING)
+			return;
+		
+		Elight.SEARCHING = true;
+		window.setTimeout('Elight.searchfor()', Elight.DELAY);
+		Elight.DELAY = 1000;
+	});
 
+	/*
 	$(Elight.SEARCH_INPUT_ID).addEvent('keypress', function(e) {
 		
-		if(!isEnterEvent(e))
-			return;
-			
-		$(Elight.SEARCH_BUTTON_ID).src = elight_working_uri;
-		
-		ElightSearchResults.search($(Elight.SEARCH_INPUT_ID).value, elight_pu_param, Elight.getSearchResults);
-			
-		e = new Event(e);
-		
-		Elight.results_slide.state = Elight.SLIDED_IN;
-		Elight.results_slidein();
-		
-//		$(Elight.SEARCH_INPUT_ID).style.width = Elight.elightSearchInput_WIDTH2;
-
-		e.stop();
 	});
+	*/
 	
 /*	var elight_scrolly = new Scroller(Elight.RESULTS_ID, {area: 80, velocity: 0.7});
 	
@@ -289,8 +347,6 @@ window.addEvent('domready', function() {
 	if(isSafariBrowser()) {
 	
 		$(Elight.SEARCH_INPUT_ID).type = 'search';
-		$(Elight.SEARCH_INPUT_ID).style.color = 'black';
-		$(Elight.SEARCH_INPUT_ID).style.backgroundColor = 'white';
 	}
 	
 	$(Elight.SEARCH_BUTTON_ID).addEvent('mouseover', Elight.mouseover);
