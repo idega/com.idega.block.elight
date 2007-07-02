@@ -53,6 +53,13 @@ public class ElightSearchResults implements Serializable {
 		
 //		doing just simple search right? at least for now
 		Map query_map = new HashMap();
+		
+//		if(!query.startsWith("*") && !query.startsWith("?"))
+//			query = "*"+query;
+		
+		if(!query.endsWith("*") && !query.endsWith("?"))
+			query = query+"*";
+			
 		query_map.put(getSimpleSearchParameterName(), query);
 		SearchQuery search_query = new SimpleSearchQuery(query_map);
 		
@@ -109,6 +116,7 @@ public class ElightSearchResults implements Serializable {
 					
 					elight_result.setTitle(result.getSearchResultName());
 					elight_result.setUrl(result.getSearchResultURI());
+					elight_result.setIconUri(plugin.getResultImgByResultURI(result.getSearchResultURI()));
 					
 					try {
 						

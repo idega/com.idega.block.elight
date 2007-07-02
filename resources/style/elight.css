@@ -48,21 +48,24 @@
 	overflow: auto;
 }
 
-#elightResults > a {
+#elightResults a {
 	text-decoration: none !important;
 }
 
-A:hover > div.elightResult {
-
-	background: #1d64f0 url(../images/bluefading.png) repeat-x top;	
+A:hover > div.elightResultContainer {
 	cursor: default;
 }
 
-.elightResult {
+A:hover > div.elightResultContainer div.elightResultSubContainer {
+
+	background: #1d64f0 url(../images/bluefading.png) repeat-x top;	
+}
+
+.elightResultContainer {
 	font-family: Arial,Helvetica,Sans-serif; 
 	font-size: 9pt;
 	
-	padding: 5px 3px 5px 3px;
+	padding: 2px 3px 2px 3px;
 	margin: 0px 7px 0px 7px;
 }
 
@@ -104,3 +107,101 @@ A:hover > div.elightResult {
 	vertical-align: middle;
 	margin-right: 4px;
 }
+
+/*==search results pane coners==*/
+div#elightResultsAndPointer div.as_header,
+div#elightResultsAndPointer div.as_footer
+{
+	position: relative;
+	height: 6px;
+	padding: 0 6px;
+	background-image: url(../images/ul_corner_tr.gif);
+	background-position: top right;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+
+div#elightResultsAndPointer div.as_footer
+{
+	background-image: url(../images/ul_corner_br.gif);
+}
+
+div#elightResultsAndPointer div.as_header div.as_corner,
+div#elightResultsAndPointer div.as_footer div.as_corner
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 6px;
+	width: 6px;
+	background-image: url(../images/ul_corner_tl.gif);
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+div#elightResultsAndPointer div.as_footer div.as_corner
+{
+	background-image: url(../images/ul_corner_bl.gif);
+}
+div#elightResultsAndPointer div.as_header div.as_bar,
+div#elightResultsAndPointer div.as_footer div.as_bar
+{
+	height: 6px;
+	overflow: hidden;
+	background-color: #313131;
+}
+
+div#elightResultsAndPointer div.as_footer div.as_bar {
+	background-color: #131313;
+}
+/*==search results pane coners (end)==*/
+/*==search result coners==*/
+
+div.elightResultContainer div.res_header,
+div.elightResultContainer div.res_footer
+{
+	position: relative;
+	height: 6px;
+	padding: 0 6px;
+	overflow: hidden;
+}
+
+A:hover > div.elightResultContainer div.res_header,
+A:hover > div.elightResultContainer div.res_footer {
+	background-image: url(../images/hl_corner_tr.gif);
+	background-position: top right;
+	background-repeat: no-repeat;
+}
+
+A:hover > div.elightResultContainer div.res_footer
+{
+	background-image: url(../images/hl_corner_br.gif);
+}
+
+div.elightResultContainer div.res_header div.res_corner,
+div.elightResultContainer div.res_footer div.res_corner
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 6px;
+	width: 6px;
+}
+
+A:hover > div.elightResultContainer div.res_header div.res_corner,
+A:hover > div.elightResultContainer div.res_footer div.res_corner
+{
+	background-image: url(../images/hl_corner_tl.gif);
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+A:hover > div.elightResultContainer div.res_footer div.res_corner
+{
+	background-image: url(../images/hl_corner_bl.gif);
+}
+div.elightResultContainer div.res_header div.res_bar,
+div.elightResultContainer div.res_footer div.res_bar
+{
+	height: 6px;
+	overflow: hidden;
+}
+/*==search result coners (end)==*/

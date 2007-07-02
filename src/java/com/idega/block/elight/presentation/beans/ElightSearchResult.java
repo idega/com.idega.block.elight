@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 public class ElightSearchResult {
 	
 	private String url;
+	private String icon_uri;
 	private String title;
 	private Document contents;
 	private String extraInfo;
@@ -53,5 +54,11 @@ public class ElightSearchResult {
 	}
 	public void setTypeLabel(String type_label) {
 		this.type_label = type_label;
+	}
+	public String getIconUri() {
+		return icon_uri;
+	}
+	public void setIconUri(String icon_uri) {
+		this.icon_uri = icon_uri;
 	}
 }

@@ -102,6 +102,7 @@ Elight.addResultEntry = function(entries, container) {
 		result.addTitle(entry.title);
 		result.addContents(entry.contents);
 		result.addUrl(entry.url);
+		result.addImgSrc(entry.iconUri);
 		container.appendChild(result.getResultDOM());
 	}
 }
@@ -214,6 +215,11 @@ ElightResult.prototype.addUrl = function(url) {
 	this.url = url;
 }
 
+ElightResult.prototype.addImgSrc = function(img_src) {
+
+	this.img_src = img_src;
+}
+
 ElightResult.prototype.getGenericResultObject = function() {
 	
 	if(ElightResult.genericResultObject && ElightResult.genericResultObject != null) {
@@ -222,6 +228,26 @@ ElightResult.prototype.getGenericResultObject = function() {
 	}
 	
 	ElightResult.genericResultObject = {};
+	
+	ElightResult.genericResultObject.resultContainerDIV = document.createElement('DIV');
+	ElightResult.genericResultObject.resultContainerDIV.setAttribute("class", "elightResultContainer");
+	
+	ElightResult.genericResultObject.resultSubContainerDIV = document.createElement('DIV');
+	ElightResult.genericResultObject.resultSubContainerDIV.setAttribute("class", "elightResultSubContainer");
+	
+	ElightResult.genericResultObject.resultHeaderDIV = document.createElement('DIV');
+	ElightResult.genericResultObject.resultHeaderDIV.setAttribute("class", "res_header");
+	
+	var corner = document.createElement('DIV');
+	corner.setAttribute("class", "res_corner");
+	ElightResult.genericResultObject.resultHeaderDIV.appendChild(corner);
+	corner = corner.cloneNode(false);
+	corner.setAttribute("class", "res_bar");
+	ElightResult.genericResultObject.resultHeaderDIV.appendChild(corner);
+	
+	ElightResult.genericResultObject.resultFooterDIV = ElightResult.genericResultObject.resultHeaderDIV.cloneNode(true);
+	ElightResult.genericResultObject.resultFooterDIV.setAttribute("class", "res_footer");
+	
 	ElightResult.genericResultObject.resultDIV = document.createElement('DIV');
 	ElightResult.genericResultObject.resultDIV.setAttribute("class", "elightResult");
 	
@@ -231,8 +257,6 @@ ElightResult.prototype.getGenericResultObject = function() {
 	ElightResult.genericResultObject.titleIMG = document.createElement('IMG');
 	ElightResult.genericResultObject.titleIMG.setAttribute("class", "elightTitleImg");
 	ElightResult.genericResultObject.titleIMG.setAttribute("src", elight_site_img_uri);
-	
-	ElightResult.genericResultObject.titleDIV.appendChild(ElightResult.genericResultObject.titleIMG);
 	
 	ElightResult.genericResultObject.contentsDIV = document.createElement('DIV');
 	ElightResult.genericResultObject.contentsDIV.setAttribute("class", "elightContents");
@@ -246,21 +270,35 @@ ElightResult.prototype.getGenericResultObject = function() {
 ElightResult.prototype.getResultDOM = function() {
 	
 	var gen_res_obj = this.getGenericResultObject();
+	var result_container_dom = gen_res_obj.resultContainerDIV.cloneNode(false);
+	var result_sub_container_dom = gen_res_obj.resultSubContainerDIV.cloneNode(false);
 	var result_dom = gen_res_obj.resultDIV.cloneNode(false);
-	var title_dom = gen_res_obj.titleDIV.cloneNode(true);
+	var title_dom = gen_res_obj.titleDIV.cloneNode(false);
+	var title_img_dom = gen_res_obj.titleIMG.cloneNode(false);
 	var contents_dom = gen_res_obj.contentsDIV.cloneNode(false);
 	var url_dom = gen_res_obj.urlDIV.cloneNode(false);
+	var header_dom = gen_res_obj.resultHeaderDIV.cloneNode(true);
+	var footer_dom = gen_res_obj.resultFooterDIV.cloneNode(true);
 	
+	title_dom.appendChild(title_img_dom);
 	result_dom.appendChild(title_dom);
 	result_dom.appendChild(contents_dom);
 	result_dom.appendChild(url_dom);
+	result_sub_container_dom.appendChild(header_dom);
+	result_sub_container_dom.appendChild(result_dom);
+	result_sub_container_dom.appendChild(footer_dom);
+	result_container_dom.appendChild(result_sub_container_dom);
 	
 	if(this.url && this.url != null) {
 	
 		var link = document.createElement('a');
 		link.setAttribute("href", this.url);
-		link.appendChild(result_dom);
-		result_dom = link;
+		link.appendChild(result_container_dom);
+		result_container_dom = link;
+	}
+	
+	if(this.img_src && this.img_src != null) {
+		title_img_dom.setAttribute("src", this.img_src);
 	}
 	
 	if(this.title && this.title != null)
@@ -272,13 +310,13 @@ ElightResult.prototype.getResultDOM = function() {
 	if(this.url && this.url != null)
 		url_dom.appendChild(document.createTextNode(this.url.cropEnd(Elight.CROP_END_URL, "...")));
 	
-	return result_dom;
+	return result_container_dom;
 }
 
 /* ------ elight result --(END)---- */
 
 window.addEvent('domready', function() {
-	
+
 	if(elight_hidden) {
 		Elight.horizontal_slide = new Fx.Slide('elightInputText', {mode: 'horizontal', duration: 300}).hide();
 		Elight.horizontal_slide.state = Elight.SLIDED_OUT;

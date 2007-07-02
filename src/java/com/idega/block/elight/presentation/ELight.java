@@ -26,9 +26,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  *
- * Last modified: $Date: 2007/06/22 16:24:38 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/02 16:17:23 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -90,6 +90,27 @@ public class ELight extends IWBaseComponent {
 		WFDivision results_and_pointer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		results_and_pointer_division.setId(elight_results_and_pointer_id);
 		
+		WFDivision header_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		header_division.setStyleClass("as_header");
+		
+		WFDivision corner_division1 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		corner_division1.setStyleClass("as_corner");
+		WFDivision corner_division2 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		corner_division2.setStyleClass("as_corner");
+		
+		WFDivision bar_division1 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		bar_division1.setStyleClass("as_bar");
+		WFDivision bar_division2 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		bar_division2.setStyleClass("as_bar");
+		
+		WFDivision footer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		footer_division.setStyleClass("as_footer");
+		
+		header_division.add(corner_division1);
+		header_division.add(bar_division1);
+		footer_division.add(corner_division2);
+		footer_division.add(bar_division2);
+		
 		HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
 		search_button.setId(elight_search_button_id);
 		search_button.setValue(IWMainApplication.getIWMainApplication(context).getBundle(IW_BUNDLE_IDENTIFIER).getImageURI(ELIGHT_SEARCH_BUTTON_SRC));
@@ -105,12 +126,14 @@ public class ELight extends IWBaseComponent {
 		input_division.add(input_text_division);
 		
 		results_and_pointer_division.add(pointer_division);
+		results_and_pointer_division.add(header_division);
 		results_and_pointer_division.add(results_division);
+		results_and_pointer_division.add(footer_division);
 		output_division.add(results_and_pointer_division);
 		
 		elight_div.add(input_division);
-		 elight_div.add(output_division);
-		
+		elight_div.add(output_division);
+		 
 		getFacets().put(elight_id, elight_div);
 		
 		addClientResources(context);
@@ -151,6 +174,10 @@ public class ELight extends IWBaseComponent {
 				AddResource resource = AddResourceFactory.getInstance(context);
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreUtil.getCoreBundle().getVirtualPathWithFileNameString(CACHE_JS_SRC));
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToMootoolsLib());
+//				web2_business.getBundleURIToMootoolsLib();
+//				web2_business.getTranscornersScriptFilePath();
+				//resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, "/idegaweb/bundles/com.idega.block.web2.0.bundle/resources/javascript/mootools/1.1.0/mootools-all.js");
+				//resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getTranscornersScriptFilePath());
 				
 				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
