@@ -11,10 +11,12 @@ import javax.faces.context.FacesContext;
 
 import org.apache.myfaces.component.html.ext.HtmlGraphicImage;
 import org.apache.myfaces.component.html.ext.HtmlInputText;
+import org.apache.myfaces.custom.htmlTag.HtmlTag;
 import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 import com.idega.block.web2.business.Web2Business;
+import com.idega.block.web2.business.Web2BusinessBean;
 import com.idega.business.SpringBeanLookup;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
@@ -26,9 +28,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  *
- * Last modified: $Date: 2007/07/02 16:17:23 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/06 14:45:54 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -78,8 +80,20 @@ public class ELight extends IWBaseComponent {
 		WFDivision output_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		output_division.setId(elight_output_id);
 		
+		HtmlTag left_span = (HtmlTag)application.createComponent(HtmlTag.COMPONENT_TYPE);
+		left_span.setValue("span");
+		left_span.setStyleClass("left");
+		
 		WFDivision input_text_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		input_text_division.setId(elight_input_text_id);
+		input_text_division.setStyleClass("blurred");
+		
+		HtmlTag right_span = (HtmlTag)application.createComponent(HtmlTag.COMPONENT_TYPE);
+		right_span.setValue("span");
+		right_span.setStyleClass("right");
+		
+		WFDivision reset_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		reset_division.setStyleClass("reset resetnotworking");
 		
 		WFDivision pointer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		pointer_division.setId(elight_pointer_id);
@@ -111,9 +125,13 @@ public class ELight extends IWBaseComponent {
 		footer_division.add(corner_division2);
 		footer_division.add(bar_division2);
 		
-		HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
-		search_button.setId(elight_search_button_id);
-		search_button.setValue(IWMainApplication.getIWMainApplication(context).getBundle(IW_BUNDLE_IDENTIFIER).getImageURI(ELIGHT_SEARCH_BUTTON_SRC));
+		if(hidden) {
+			HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
+			search_button.setId(elight_search_button_id);
+			search_button.setValue(IWMainApplication.getIWMainApplication(context).getBundle(IW_BUNDLE_IDENTIFIER).getImageURI(ELIGHT_SEARCH_BUTTON_SRC));
+			
+			input_division.add(search_button);
+		}
 		
 		HtmlInputText search_input = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
 		search_input.setId(elight_search_input_id);
@@ -121,8 +139,11 @@ public class ELight extends IWBaseComponent {
 		search_input.setAccesskey("s");
 //		TODO: check if accessd. then expand (slidein)
 
-		input_division.add(search_button);
+		input_text_division.add(left_span);
 		input_text_division.add(search_input);
+		input_text_division.add(right_span);
+		input_text_division.add(reset_division);
+		
 		input_division.add(input_text_division);
 		
 		results_and_pointer_division.add(pointer_division);
@@ -174,10 +195,8 @@ public class ELight extends IWBaseComponent {
 				AddResource resource = AddResourceFactory.getInstance(context);
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreUtil.getCoreBundle().getVirtualPathWithFileNameString(CACHE_JS_SRC));
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToMootoolsLib());
-//				web2_business.getBundleURIToMootoolsLib();
-//				web2_business.getTranscornersScriptFilePath();
-				//resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, "/idegaweb/bundles/com.idega.block.web2.0.bundle/resources/javascript/mootools/1.1.0/mootools-all.js");
-				//resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getTranscornersScriptFilePath());
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToJQueryLib());
+				resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "jQuery.noConflict();");
 				
 				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
@@ -197,6 +216,15 @@ public class ELight extends IWBaseComponent {
 						.append("var elight_hidden = ")
 						.append(hidden ? "true" : "false")
 						.append(";\n")
+						.append("var elight_input_left_img_uri = '")
+						.append(bundle.getImageURI("images/sf_left.png"))
+						.append("';\n")
+						.append("var elight_input_right_img_uri = '")
+						.append(bundle.getImageURI("images/sf_right.png"))
+						.append("';\n")
+						.append("var elight_input_field_initial_value = '")
+						.append("Search")
+						.append("';\n")
 						.append("var elight_site_img_uri = '")
 						.append(bundle.getImageURI(ELIGHT_SITE_ICON))
 						.append("';")

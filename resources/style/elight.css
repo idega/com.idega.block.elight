@@ -10,13 +10,59 @@
 	display: inline;
 }
 
+#elightInputText {
+	width: 148px;
+}
+
 #elightSearchInput {
-	width: 150px;
-	background: white;
-	color: black;
-	border: 1px solid grey;
-	padding-left: 3px;
-	padding-right: 3px;
+	
+	background:transparent url(../images/sf_repeat.png) repeat-x scroll center top;
+	border:0px none;
+	font-family:"Lucida Grande",Geneva,Arial,sans-serif;
+	font-size:11px;
+	font-size-adjust:none;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:normal;
+	padding:3px 3pt 0pt 3pt;
+	width:110px;
+	height: 20px;
+	position: relative;
+	left: 20px;
+	margin:0pt;
+}
+
+#elightInputText.blurred input {
+	color: #7E7E7E;
+}
+
+#elightInputText .reset {
+	position: absolute;
+	width: 11px;
+	height: 11px;
+	overflow:hidden;
+	z-index: 1;
+	right: 4px;
+	top: 4px;
+	display: none;
+}
+
+#elightInputText .resetnotworking {
+	background: url(../images/close.gif);
+}
+
+#elightInputText .resetworking {
+	background: url(../images/elight-working2.gif);	
+}
+
+#elightInputText .left img, #elightInputText .right img {
+	position:absolute;
+	top:0px;
+}
+
+#elightInputText .right img {
+	left: 138px;
 }
 
 #elightOutput > div {
@@ -115,7 +161,7 @@ div#elightResultsAndPointer div.as_footer
 	position: relative;
 	height: 6px;
 	padding: 0 6px;
-	background-image: url(../images/ul_corner_tr.gif);
+	background-image: url(../images/ul_corner_tr.png);
 	background-position: top right;
 	background-repeat: no-repeat;
 	overflow: hidden;
@@ -123,7 +169,7 @@ div#elightResultsAndPointer div.as_footer
 
 div#elightResultsAndPointer div.as_footer
 {
-	background-image: url(../images/ul_corner_br.gif);
+	background-image: url(../images/ul_corner_br.png);
 }
 
 div#elightResultsAndPointer div.as_header div.as_corner,
@@ -134,13 +180,13 @@ div#elightResultsAndPointer div.as_footer div.as_corner
 	left: 0;
 	height: 6px;
 	width: 6px;
-	background-image: url(../images/ul_corner_tl.gif);
+	background-image: url(../images/ul_corner_tl.png);
 	background-position: top left;
 	background-repeat: no-repeat;
 }
 div#elightResultsAndPointer div.as_footer div.as_corner
 {
-	background-image: url(../images/ul_corner_bl.gif);
+	background-image: url(../images/ul_corner_bl.png);
 }
 div#elightResultsAndPointer div.as_header div.as_bar,
 div#elightResultsAndPointer div.as_footer div.as_bar
@@ -203,9 +249,5 @@ div.elightResultContainer div.res_footer div.res_bar
 {
 	height: 6px;
 	overflow: hidden;
-}
-
-div.elightResultContainer div.res_footer {
-	background-color: transparent !important;
 }
 /*==search result coners (end)==*/
