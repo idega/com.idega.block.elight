@@ -34,7 +34,7 @@ Elight.getSearchResults = function(data, response_priority, searched_for) {
 	Elight.RESPONSE_PRIORITY_RETRIEVED = response_priority;
 	
 	var container = $(Elight.RESULTS_ID);
-	removeChildren(container);
+	jQuery(container).empty();
 	
 	if(!data || data == null || data.length == 0) {
 		Elight.addMessage("Sorry. No data was retrieved.", container);
@@ -66,7 +66,7 @@ Elight.addSearchResults = function(data, container) {
 		Elight.one_type = true;
 	
 	for(var index=0; index<data.length; index++) {
-		
+	
 		Elight.addResultEntry(data[index], container);
 	}
 	
@@ -130,7 +130,7 @@ Elight.searchFieldKeyup = function(e) {
 
 	if(Elight.SEARCHING)
 		return;
-	
+		
 	Elight.SEARCHING = true;
 	window.setTimeout(Elight.SEARCH_FOR_EXP, Elight.DELAY);
 	Elight.DELAY = 1000;
@@ -176,7 +176,7 @@ Elight.searchfor = function() {
 		
 			var cdata = Elight.CACHE.getItem(search_for);
 			if(cdata != null) {
-				removeChildren($(Elight.RESULTS_ID));		
+				jQuery($(Elight.RESULTS_ID)).empty();
 				Elight.addSearchResults(cdata, $(Elight.RESULTS_ID));
 			} else {
 			
@@ -215,7 +215,6 @@ Elight.resultsSlideout = function() {
 
 Elight.results_slidein = function() {
 
-	removeChildren($(Elight.RESULTS_ID));
 	Elight.results_slide.slideIn();
 	$(Elight.RESULTS_ID).style.overflow = 'auto';
 }
@@ -229,9 +228,12 @@ Elight.slideout = function() {
 		}
 		
 		if(Elight.results_slide.state == Elight.SLIDED_IN) {
+		
+			jQuery($(Elight.RESULTS_ID)).empty();
 
 			Elight.results_slide.state = Elight.SLIDED_OUT;		
 			Elight.resultsSlideout();
+
 		}
 }
 /* </fx> */
@@ -432,7 +434,7 @@ Elight.inputFieldOnBlur = function() {
 		return;
 		
 	$(Elight.SEARCH_INPUT_ID).value = elight_input_field_initial_value;
-	jQuery("#elightInputText").toggleClass("blurred");
+	jQuery($(Elight.INPUT_TEXT_ID)).toggleClass("blurred");
 	Elight.input_blurred = true;
 }
 
@@ -441,13 +443,15 @@ Elight.inputFieldOnClick = function() {
 	if(Elight.input_blurred && $(Elight.SEARCH_INPUT_ID).value == elight_input_field_initial_value) {
 	
 		$(Elight.SEARCH_INPUT_ID).value = "";
-		jQuery("#elightInputText").removeClass("blurred");
+		jQuery($(Elight.INPUT_TEXT_ID)).removeClass("blurred");
 		Elight.input_blurred = false;
 	}
 }
 
 Elight.inputFieldStylements = function() {
 
+	$(Elight.SEARCH_INPUT_ID).value = elight_input_field_initial_value;
+	
 	if(isSafariBrowser()) {
 		$(Elight.SEARCH_INPUT_ID).type = 'search';
 		return;
@@ -458,7 +462,6 @@ Elight.inputFieldStylements = function() {
 	
 	jQuery("#elightInputText .left img").attr("src", elight_input_left_img_uri);
 	jQuery("#elightInputText .right img").attr("src", elight_input_right_img_uri);
-	$(Elight.SEARCH_INPUT_ID).value = elight_input_field_initial_value;
 }
 
 window.addEvent('click', function() {
