@@ -16,7 +16,6 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 import com.idega.block.web2.business.Web2Business;
-import com.idega.block.web2.business.Web2BusinessBean;
 import com.idega.business.SpringBeanLookup;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
@@ -28,37 +27,39 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  *
- * Last modified: $Date: 2007/07/06 14:45:54 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/11 21:10:23 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
 	
-	private static final String elight_id = "elight";
-	private static final String elight_input_id = "elightInput";
-	private static final String elight_output_id = "elightOutput";
-	private static final String elight_search_button_id = "elightSearchButton";
-	private static final String elight_search_input_id = "elightSearchInput";
-	private static final String elight_input_text_id = "elightInputText";
-	private static final String elight_results_id = "elightResults";
-	private static final String elight_pointer_id = "elightPointer";
-	private static final String elight_results_and_pointer_id = "elightResultsAndPointer";
+	private static final String elight_id 								= "elight";
+	private static final String elight_input_class 						= "elinput";
+	private static final String elight_output_class 					= "eloutput";
+	private static final String elight_search_button_id 				= "elightSearchButton";
+	private static final String elight_search_input_id	 				= "elightInputText";
+	private static final String elight_search_input_class 				= "g-prettysearch";
+	private static final String elight_input_text_id	 				= "elightInputTextContainer";
+	private static final String elight_input_text_class 				= "search-wrapper";
+	private static final String elight_results_id 						= "elightResults";
+	private static final String elight_pointer_id 						= "elightPointer";
+	private static final String elight_results_and_pointer_id 			= "elightResultsAndPointer";
 	
-	private static final String ELIGHT_SEARCH_BUTTON_SRC = "images/elightSearchButton.png";
-	private static final String ELIGHT_WORKING_SRC = "images/elightWorking.gif";
-	private static final String ELIGHT_SITE_ICON = "images/Site16.png";
+	private static final String ELIGHT_SEARCH_BUTTON_SRC 				= "images/elightSearchButton.png";
+	private static final String ELIGHT_WORKING_SRC 						= "images/elightWorking.gif";
+	private static final String ELIGHT_SITE_ICON 						= "images/Site16.png";
 	
-	private static final String ELIGHT_JS_SRC = "javascript/elight.js";
-	private static final String ELIGHT__SEARCH_RESULTS_JS_SRC = "/dwr/interface/ElightSearchResults.js";
-	private static final String DWR_ENGINE_SRC = "/dwr/engine.js";
-	private static final String CACHE_JS_SRC = "javascript/MonsurCache.js";
+	private static final String ELIGHT_JS_SRC 							= "javascript/elight.js";
+	private static final String ELIGHT__SEARCH_RESULTS_JS_SRC 			= "/dwr/interface/ElightSearchResults.js";
+	private static final String DWR_ENGINE_SRC 							= "/dwr/engine.js";
+	private static final String CACHE_JS_SRC 							= "javascript/MonsurCache.js";
 	
-	private static final String ELIGHT_CSS_SRC = "style/elight.css";
+	private static final String ELIGHT_CSS_SRC 							= "style/elight.css";
 	
-	public static final String IW_BUNDLE_IDENTIFIER = "com.idega.block.elight";
+	public static final String IW_BUNDLE_IDENTIFIER 					= "com.idega.block.elight";
 	private List<String> plugins_used;
-	private boolean hidden = true;
+	private boolean hidden = false;
 	
 	public ELight() {
 		
@@ -75,25 +76,25 @@ public class ELight extends IWBaseComponent {
 		elight_div.setId(elight_id);
 		
 		WFDivision input_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		input_division.setId(elight_input_id);
+		input_division.setStyleClass(elight_input_class);
 		
 		WFDivision output_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		output_division.setId(elight_output_id);
+		output_division.setStyleClass(elight_output_class);
 		
 		HtmlTag left_span = (HtmlTag)application.createComponent(HtmlTag.COMPONENT_TYPE);
 		left_span.setValue("span");
-		left_span.setStyleClass("left");
+		left_span.setStyleClass("elleft");
 		
 		WFDivision input_text_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		input_text_division.setId(elight_input_text_id);
-		input_text_division.setStyleClass("blurred");
+		input_text_division.setStyleClass(elight_input_text_class+" blurred");
 		
 		HtmlTag right_span = (HtmlTag)application.createComponent(HtmlTag.COMPONENT_TYPE);
 		right_span.setValue("span");
-		right_span.setStyleClass("right");
+		right_span.setStyleClass("elright");
 		
 		WFDivision reset_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		reset_division.setStyleClass("reset resetnotworking");
+		reset_division.setStyleClass("elreset resetnotworking");
 		
 		WFDivision pointer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		pointer_division.setId(elight_pointer_id);
@@ -135,6 +136,7 @@ public class ELight extends IWBaseComponent {
 		
 		HtmlInputText search_input = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
 		search_input.setId(elight_search_input_id);
+		search_input.setStyleClass(elight_search_input_class);
 		search_input.setAutocomplete("off");
 		search_input.setAccesskey("s");
 //		TODO: check if accessd. then expand (slidein)
