@@ -38,9 +38,9 @@ div#elight .search-wrapper input.g-prettysearch {
 	width: 150px; margin-left: 20px; /*margin-top:-1px; *margin-right:-2px; *margin-left:10px;*/
 }
 
-/*div#elight .search-wrapper .elleft, 
-div#elight .search-wrapper .elright { behavior:url(/global/scripts/lib/iepngfix.htc); }
-*/
+div#elight .search-wrapper .elleft, 
+div#elight .search-wrapper .elright { behavior:url(../scripts/iepngfix.htc); }
+
 div#elight .search-wrapper .elleft { display: block; position: absolute; left: 0; top: 0; width: 20px; height: 19px; background: url(../images/sf_left.png) left top no-repeat; }
 div#elight .search-wrapper .elright { display: block; position: absolute; right: 0; top: 0; width: 10px; height: 19px; background: url(../images/sf_right.png) right top no-repeat; }
 
@@ -58,6 +58,12 @@ div#elight .search-wrapper input.g-prettysearch {
 	font: 11px "Lucida Grande", Geneva, Arial, sans-serif;
 	height: 20px;
 }
+
+/*
+div#elight .search-wrapper input.safari {
+	width: 160px;
+}
+*/
 
 /* elight > elinput > div > search-wrapper > g-prettysearch */
 div#elight div.search-wrapper.blurred input.g-prettysearch {

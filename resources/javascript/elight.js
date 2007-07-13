@@ -22,6 +22,7 @@ Elight.results_slide 				= null;
 Elight.CACHE 						= new Cache();
 Elight.SEARCH_FOR_EXP 				= 'Elight.searchfor()';
 Elight.input_blurred = true;
+Elight.isSafari 					= false;
 
 /* <search_results> */
 Elight.getSearchResults = function(data, response_priority, searched_for) {
@@ -115,15 +116,17 @@ Elight.addMessage = function(message, container) {
 // 		<keyboard>
 Elight.searchFieldKeyup = function(e) {
 
-	if($(Elight.INPUT_TEXT_ID).value == "" && Elight.RESET_DISPLAYED) {
+	if(!Elight.isSafari) {
+		if($(Elight.INPUT_TEXT_ID).value == "" && Elight.RESET_DISPLAYED) {
+		
+			Elight.RESET_DISPLAYED = false;
+			jQuery("#elightInputTextContainer .elreset").hide();
+		
+		} else if($(Elight.INPUT_TEXT_ID).value != "" && !Elight.RESET_DISPLAYED) {
 	
-		Elight.RESET_DISPLAYED = false;
-		jQuery("#elightInputTextContainer .elreset").hide();
-	
-	} else if($(Elight.INPUT_TEXT_ID).value != "" && !Elight.RESET_DISPLAYED) {
-
-		Elight.RESET_DISPLAYED = true;
-		jQuery("#elightInputTextContainer .elreset").show();
+			Elight.RESET_DISPLAYED = true;
+			jQuery("#elightInputTextContainer .elreset").show();
+		}
 	}
 
 	if(Elight.SEARCHING)
@@ -148,12 +151,11 @@ Elight.mouseout = function() {
 //		<reactions>
 Elight.setWorking = function(working) {
 
-	if(working) {
-		jQuery("#elightInputTextContainer .elreset").removeClass("resetnotworking");
-		jQuery("#elightInputTextContainer .elreset").toggleClass("resetworking");
-	} else {
-		jQuery("#elightInputTextContainer .elreset").removeClass("resetworking");
-		jQuery("#elightInputTextContainer .elreset").toggleClass("resetnotworking");
+	if(!Elight.isSafari) {
+		if(working)
+			jQuery("#elightInputTextContainer .elreset").removeClass("resetnotworking").toggleClass("resetworking");
+		else
+			jQuery("#elightInputTextContainer .elreset").removeClass("resetworking").toggleClass("resetnotworking");
 	}
 
 	if(!$(Elight.SEARCH_BUTTON_ID))
@@ -355,6 +357,8 @@ ElightResult.prototype.getResultDOM = function() {
 
 window.addEvent('domready', function() {
 
+	Elight.isSafari = isSafariBrowser();
+
 	if(elight_hidden) {
 		Elight.horizontal_slide = new Fx.Slide('elightInputTextContainer', {mode: 'horizontal', duration: 300}).hide();
 		Elight.horizontal_slide.state = Elight.SLIDED_OUT;
@@ -386,30 +390,28 @@ window.addEvent('domready', function() {
 
 	Elight.results_slide.state = Elight.SLIDED_OUT;
 //	Elight.results_slide.state = Elight.SLIDED_IN;
-	$(Elight.INPUT_TEXT_ID).addEvent('keyup', Elight.searchFieldKeyup);
+	jQuery($(Elight.INPUT_TEXT_ID)).bind('keyup', Elight.searchFieldKeyup);
 	
 	Elight.inputFieldStylements();
 	
-	if($(Elight.SEARCH_BUTTON_ID)) {
-		$(Elight.SEARCH_BUTTON_ID).addEvent('mouseover', Elight.mouseover);
-		$(Elight.SEARCH_BUTTON_ID).addEvent('mouseout', Elight.mouseout);
+	if($(Elight.SEARCH_BUTTON_ID))
+		jQuery($(Elight.SEARCH_BUTTON_ID)).bind('mouseover', Elight.mouseover).bind('mouseout', Elight.mouseout);
+	
+	jQuery($(Elight.INPUT_TEXT_CONTAINER_ID)).bind('mouseover', Elight.mouseover).bind('mouseout', Elight.mouseout);
+	jQuery($(Elight.RESULTS_ID)).bind('mouseover', Elight.mouseover).bind('mouseout', Elight.mouseout);
+	
+	if(!Elight.isSafari) {
+		jQuery($(Elight.INPUT_TEXT_ID)).bind('blur', Elight.inputFieldOnBlur).bind('click', Elight.inputFieldOnClick);
+		
+		jQuery("#elightInputTextContainer .elreset").bind("click", function(){
+	
+			$(Elight.INPUT_TEXT_ID).value = "";
+			$(Elight.INPUT_TEXT_ID).focus();
+			Elight.slideout();
+			Elight.RESET_DISPLAYED = false;
+			jQuery("#elightInputTextContainer .elreset").hide();
+		});
 	}
-	
-	$(Elight.INPUT_TEXT_CONTAINER_ID).addEvent('mouseover', Elight.mouseover);
-	$(Elight.INPUT_TEXT_CONTAINER_ID).addEvent('mouseout', Elight.mouseout);
-	$(Elight.RESULTS_ID).addEvent('mouseover', Elight.mouseover);
-	$(Elight.RESULTS_ID).addEvent('mouseout', Elight.mouseout);
-	$(Elight.INPUT_TEXT_ID).addEvent('blur', Elight.inputFieldOnBlur);
-	$(Elight.INPUT_TEXT_ID).addEvent('click', Elight.inputFieldOnClick);
-	
-	jQuery("#elightInputTextContainer .elreset").bind("click", function(){
-	
-		$(Elight.INPUT_TEXT_ID).value = "";
-		$(Elight.INPUT_TEXT_ID).focus();
-		Elight.slideout();
-		Elight.RESET_DISPLAYED = false;
-		jQuery("#elightInputTextContainer .elreset").hide();
-	});
 });
 
 Elight.inputFieldOnBlur = function() {
@@ -434,13 +436,18 @@ Elight.inputFieldOnClick = function() {
 
 Elight.inputFieldStylements = function() {
 
-	$(Elight.INPUT_TEXT_ID).value = elight_input_field_initial_value;
+	if(Elight.isSafari) {
 	
-	if(isSafariBrowser()) {
+		jQuery('#elight .elleft, #elight .elright, #elight .elreset').remove();
+		jQuery($(Elight.INPUT_TEXT_ID)).attr("placeholder", elight_input_field_initial_value);
 		$(Elight.INPUT_TEXT_ID).type = 'search';
 		jQuery($(Elight.INPUT_TEXT_ID)).toggleClass("safari");
+		jQuery($(Elight.INPUT_TEXT_CONTAINER_ID)).removeClass("blurred");
+		
 		return;
 	}
+	
+	$(Elight.INPUT_TEXT_ID).value = elight_input_field_initial_value;
 }
 
 window.addEvent('click', function() {
