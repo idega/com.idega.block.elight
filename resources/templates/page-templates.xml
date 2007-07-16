@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <page-templates>
-	<page name="ePlatform search" type="search" iconfile="idegaweb/bundles/com.idega.block.elight.bundle/resources/images/elightSearchButton_small.png" templatefile="idegaweb/bundles/com.idega.block.elight.bundle/resources/pages/idega_elight_page.xml"></page>
+	<page name="Search" type="search" iconfile="idegaweb/bundles/com.idega.block.elight.bundle/resources/images/spotlight16.png" templatefile="idegaweb/bundles/com.idega.block.elight.bundle/resources/pages/idega_elight_page.xml"></page>
 </page-templates>
