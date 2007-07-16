@@ -27,9 +27,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  *
- * Last modified: $Date: 2007/07/11 21:10:23 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/16 18:32:39 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -108,10 +108,14 @@ public class ELight extends IWBaseComponent {
 		WFDivision header_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		header_division.setStyleClass("as_header");
 		
-		WFDivision corner_division1 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		corner_division1.setStyleClass("as_corner");
-		WFDivision corner_division2 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		corner_division2.setStyleClass("as_corner");
+		WFDivision header_left_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		header_left_corner_division.setStyleClass("as_corner_left");
+		WFDivision footer_left_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		footer_left_corner_division.setStyleClass("as_corner_left");
+		WFDivision header_right_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		header_right_corner_division.setStyleClass("as_corner_right");
+		WFDivision footer_right_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
+		footer_right_corner_division.setStyleClass("as_corner_right");
 		
 		WFDivision bar_division1 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		bar_division1.setStyleClass("as_bar");
@@ -121,10 +125,12 @@ public class ELight extends IWBaseComponent {
 		WFDivision footer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		footer_division.setStyleClass("as_footer");
 		
-		header_division.add(corner_division1);
+		header_division.add(header_left_corner_division);
 		header_division.add(bar_division1);
-		footer_division.add(corner_division2);
+		header_division.add(header_right_corner_division);
+		footer_division.add(footer_left_corner_division);
 		footer_division.add(bar_division2);
+		footer_division.add(footer_right_corner_division);
 		
 		if(hidden) {
 			HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
@@ -218,14 +224,8 @@ public class ELight extends IWBaseComponent {
 						.append("var elight_hidden = ")
 						.append(hidden ? "true" : "false")
 						.append(";\n")
-						.append("var elight_input_left_img_uri = '")
-						.append(bundle.getImageURI("images/sf_left.png"))
-						.append("';\n")
-						.append("var elight_input_right_img_uri = '")
-						.append(bundle.getImageURI("images/sf_right.png"))
-						.append("';\n")
 						.append("var elight_input_field_initial_value = '")
-						.append("Search")
+						.append("Search")//TODO: localize
 						.append("';\n")
 						.append("var elight_site_img_uri = '")
 						.append(bundle.getImageURI(ELIGHT_SITE_ICON))

@@ -26,7 +26,6 @@ Elight.isSafari 					= false;
 
 /* <search_results> */
 Elight.getSearchResults = function(data, response_priority, searched_for) {
-
 	if(response_priority < Elight.RESPONSE_PRIORITY_RETRIEVED)
 		return;
 		
@@ -80,9 +79,9 @@ Elight.addResultEntry = function(entries, container) {
 	if(!Elight.one_type) {
 	
 		type_container = document.createElement("DIV");
-		type_container.setAttribute("class", "elightTypeContainer");
+		jQuery(type_container).toggleClass("elightTypeContainer");
 		var label_container = document.createElement("DIV");
-		label_container.setAttribute("class", "elightLabelContainer");
+		jQuery(label_container).toggleClass("elightLabelContainer");
 		var label = document.createTextNode(entries[0].typeLabel);
 		
 		label_container.appendChild(label);
@@ -106,7 +105,7 @@ Elight.addResultEntry = function(entries, container) {
 
 Elight.addMessage = function(message, container) {
 	var messsage_dom = document.createElement("DIV");
-	messsage_dom.setAttribute("class", "elightMessage");
+	jQuery(messsage_dom).toggleClass("elightMessage");
 	messsage_dom.appendChild(document.createTextNode(message));
 	container.appendChild(messsage_dom);
 }
@@ -153,9 +152,9 @@ Elight.setWorking = function(working) {
 
 	if(!Elight.isSafari) {
 		if(working)
-			jQuery("#elightInputTextContainer .elreset").removeClass("resetnotworking").toggleClass("resetworking");
+			jQuery("#elightInputTextContainer .elreset").toggleClass("resetworking").removeClass("resetnotworking");
 		else
-			jQuery("#elightInputTextContainer .elreset").removeClass("resetworking").toggleClass("resetnotworking");
+			jQuery("#elightInputTextContainer .elreset").toggleClass("resetnotworking").removeClass("resetworking");
 	}
 
 	if(!$(Elight.SEARCH_BUTTON_ID))
@@ -271,39 +270,39 @@ ElightResult.prototype.getGenericResultObject = function() {
 	ElightResult.genericResultObject = {};
 	
 	ElightResult.genericResultObject.resultContainerDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.resultContainerDIV.setAttribute("class", "elightResultContainer");
+	jQuery(ElightResult.genericResultObject.resultContainerDIV).toggleClass("elightResultContainer");
 	
 	ElightResult.genericResultObject.resultSubContainerDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.resultSubContainerDIV.setAttribute("class", "elightResultSubContainer");
+	jQuery(ElightResult.genericResultObject.resultSubContainerDIV).toggleClass("elightResultSubContainer");
 	
 	ElightResult.genericResultObject.resultHeaderDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.resultHeaderDIV.setAttribute("class", "res_header");
+	jQuery(ElightResult.genericResultObject.resultHeaderDIV).toggleClass("res_header");
 	
 	var corner = document.createElement('DIV');
-	corner.setAttribute("class", "res_corner");
+	jQuery(corner).toggleClass("res_corner");
 	ElightResult.genericResultObject.resultHeaderDIV.appendChild(corner);
 	corner = corner.cloneNode(false);
-	corner.setAttribute("class", "res_bar");
+	jQuery(corner).toggleClass("res_bar");
 	ElightResult.genericResultObject.resultHeaderDIV.appendChild(corner);
 	
 	ElightResult.genericResultObject.resultFooterDIV = ElightResult.genericResultObject.resultHeaderDIV.cloneNode(true);
-	ElightResult.genericResultObject.resultFooterDIV.setAttribute("class", "res_footer");
+	jQuery(ElightResult.genericResultObject.resultFooterDIV).toggleClass("res_footer");
 	
 	ElightResult.genericResultObject.resultDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.resultDIV.setAttribute("class", "elightResult");
+	jQuery(ElightResult.genericResultObject.resultDIV).toggleClass("elightResult");
 	
 	ElightResult.genericResultObject.titleDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.titleDIV.setAttribute("class", "elightTitle");
+	jQuery(ElightResult.genericResultObject.titleDIV).toggleClass("elightTitle");
 	
 	ElightResult.genericResultObject.titleIMG = document.createElement('IMG');
-	ElightResult.genericResultObject.titleIMG.setAttribute("class", "elightTitleImg");
-	ElightResult.genericResultObject.titleIMG.setAttribute("src", elight_site_img_uri);
+	jQuery(ElightResult.genericResultObject.titleIMG).toggleClass("elightTitleImg");
+	jQuery(ElightResult.genericResultObject.titleIMG).attr("src", elight_site_img_uri);
 	
 	ElightResult.genericResultObject.contentsDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.contentsDIV.setAttribute("class", "elightContents");
+	jQuery(ElightResult.genericResultObject.contentsDIV).toggleClass("elightContents");
 	
 	ElightResult.genericResultObject.urlDIV = document.createElement('DIV');
-	ElightResult.genericResultObject.urlDIV.setAttribute("class", "elightUrl");
+	jQuery(ElightResult.genericResultObject.urlDIV).toggleClass("elightUrl");
 	
 	return ElightResult.genericResultObject;
 }
@@ -333,7 +332,7 @@ ElightResult.prototype.getResultDOM = function() {
 	if(this.url && this.url != null) {
 	
 		var link = document.createElement('a');
-		link.setAttribute("href", this.url);
+		link.setAttribute('href', this.url);
 		link.appendChild(result_container_dom);
 		result_container_dom = link;
 	}
@@ -357,7 +356,7 @@ ElightResult.prototype.getResultDOM = function() {
 
 window.addEvent('domready', function() {
 
-	Elight.isSafari = isSafariBrowser();
+	Elight.isSafari = jQuery.browser.safari;
 
 	if(elight_hidden) {
 		Elight.horizontal_slide = new Fx.Slide('elightInputTextContainer', {mode: 'horizontal', duration: 300}).hide();
@@ -412,6 +411,10 @@ window.addEvent('domready', function() {
 			jQuery("#elightInputTextContainer .elreset").hide();
 		});
 	}
+	
+	jQuery('div#elight div.elinput > div').toggleClass("elinputfc");
+	jQuery('div#elight div.eloutput > div').toggleClass("eloutputfc");
+	
 });
 
 Elight.inputFieldOnBlur = function() {
