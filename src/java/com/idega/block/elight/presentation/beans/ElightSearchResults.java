@@ -6,11 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.idega.block.elight.presentation.ELight;
 import com.idega.core.search.business.Search;
 import com.idega.core.search.business.SearchPlugin;
 import com.idega.core.search.business.SearchPluginManager;
@@ -19,6 +22,8 @@ import com.idega.core.search.business.SearchResult;
 import com.idega.core.search.data.SimpleSearchQuery;
 import com.idega.core.search.presentation.Searcher;
 import com.idega.data.StringInputStream;
+import com.idega.idegaweb.IWBundle;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 
 /**
@@ -34,6 +39,7 @@ public class ElightSearchResults implements Serializable {
 	
 	private String searchParameterName = Searcher.DEFAULT_SEARCH_PARAMETER_NAME;
 	
+	private Logger logger = Logger.getLogger(ElightSearchResults.class.getName());
 	private DocumentBuilderFactory factory;
 	private static final String contents_xml_part1 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><content>";
 	private static final String contents_xml_part2 = "</content>";
@@ -46,16 +52,12 @@ public class ElightSearchResults implements Serializable {
 		Collection<SearchPlugin> plugins = SearchPluginManager.getInstance().getAllSearchPluginsInitialized(iwc.getIWMainApplication());
 		
 		if (plugins == null || plugins.isEmpty()) {
-			
-//			TODO: return than nothing found
-			return getMessageToTheUser("None plugins found");
+		
+			IWBundle bundle = IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER);
+			return getMessageToTheUser(bundle.getLocalizedString("none_plugins_found", "None plugins found"));
 		}
 		
-//		doing just simple search right? at least for now
 		Map query_map = new HashMap();
-		
-//		if(!query.startsWith("*") && !query.startsWith("?"))
-//			query = "*"+query;
 		
 		if(!query.endsWith("*") && !query.endsWith("?"))
 			query = query+"*";
@@ -68,8 +70,9 @@ public class ElightSearchResults implements Serializable {
 		DocumentBuilder doc_builder = getDocumentBuilder();
 		
 		if(doc_builder == null) {
-//			TODO: log
-			return getMessageToTheUser("Sorry, internal error occured. Please, report to administrators.");
+			
+			IWBundle bundle = IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER);
+			return getMessageToTheUser(bundle.getLocalizedString("err.internal", "Sorry, internal error occured. Please, report to administrators."));
 		}
 			
 		for (SearchPlugin plugin : plugins) {
@@ -90,7 +93,7 @@ public class ElightSearchResults implements Serializable {
 				Collection<SearchResult> results = search.getSearchResults();
 				
 				if(results == null || results.isEmpty()) {
-//					TODO: maybe add plugin type still and say no results or smth
+//					TODO: maybe add plugin type still and say no results
 					continue;
 				}
 				
@@ -100,7 +103,7 @@ public class ElightSearchResults implements Serializable {
 					
 					if(plugin.getSearchIdentifier().equals("ContentSearch")) {
 						
-//						TODO: this is of course temporary, modify content search plugin so it looks at user rights 
+//						TODO: this is temporary, modify content search plugin so it looks at user rights 
 						
 						if(result.getSearchResultURI() != null && 
 							(
@@ -128,8 +131,8 @@ public class ElightSearchResults implements Serializable {
 						)));
 						
 					} catch (Exception e) {
-						// TODO: log
-						e.printStackTrace();
+						
+						logger.log(Level.SEVERE, "Error while parsing result contents. Search result name: "+result.getSearchResultName()+". Skipping..", e);
 						continue;
 					}
 					
@@ -146,14 +149,15 @@ public class ElightSearchResults implements Serializable {
 				}
 				
 			} catch (Exception e) {
-				// TODO: log
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Error while retrieving plugin search results. Plugin name: "+plugin.getSearchName()+". If that's websearcher, probably needs to be indexed. Skipping..", e);
 				continue;
 			}
 		}
 		
-		if(typed_search_results.values().isEmpty())
-			return getMessageToTheUser("No results found");
+		if(typed_search_results.values().isEmpty()) {
+			IWBundle bundle = IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER);
+			return getMessageToTheUser(bundle.getLocalizedString("no_results_found", "No results found"));
+		}
 		
 		return typed_search_results.values();
 	}

@@ -27,32 +27,42 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  *
- * Last modified: $Date: 2007/07/16 18:32:39 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/17 09:55:09 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
 	
 	private static final String elight_id 								= "elight";
-	private static final String elight_input_class 						= "elinput";
-	private static final String elight_output_class 					= "eloutput";
 	private static final String elight_search_button_id 				= "elightSearchButton";
 	private static final String elight_search_input_id	 				= "elightInputText";
-	private static final String elight_search_input_class 				= "g-prettysearch";
 	private static final String elight_input_text_id	 				= "elightInputTextContainer";
-	private static final String elight_input_text_class 				= "search-wrapper";
 	private static final String elight_results_id 						= "elightResults";
 	private static final String elight_pointer_id 						= "elightPointer";
 	private static final String elight_results_and_pointer_id 			= "elightResultsAndPointer";
 	
-	private static final String ELIGHT_SEARCH_BUTTON_SRC 				= "images/elightSearchButton.png";
-	private static final String ELIGHT_WORKING_SRC 						= "images/elightWorking.gif";
-	private static final String ELIGHT_SITE_ICON 						= "images/Site16.png";
+	private static final String elight_input_class 						= "elinput";
+	private static final String elight_output_class 					= "eloutput";
+	private static final String elight_search_input_class 				= "g-prettysearch";
+	private static final String elight_input_text_class 				= "search-wrapper";
+	private static final String elight_elright_class 					= "elright";
+	private static final String elight_elleft_class 					= "elleft";
+	private static final String elight_as_header_class 					= "as_header";
+	private static final String elight_as_left_corner_class 			= "as_corner_left";
+	private static final String elight_as_right_corner_class 			= "as_corner_right";
+	private static final String elight_as_bar_class 					= "as_bar";
+	private static final String elight_as_footer_class 					= "as_footer";
+	
+	private static final String span_tag				 				= "span";
+	
+	private static final String ELIGHT_SEARCH_BUTTON_IMG 				= "images/elightSearchButton.png";
+	private static final String ELIGHT_WORKING_IMG 						= "images/elightWorking.gif";
+	private static final String ELIGHT_SITE_IMG 						= "images/Site16.png";
 	
 	private static final String ELIGHT_JS_SRC 							= "javascript/elight.js";
-	private static final String ELIGHT__SEARCH_RESULTS_JS_SRC 			= "/dwr/interface/ElightSearchResults.js";
-	private static final String DWR_ENGINE_SRC 							= "/dwr/engine.js";
+	private static final String ELIGHT_SEARCH_RESULTS_JS_SRC 			= "/dwr/interface/ElightSearchResults.js";
+	private static final String DWR_ENGINE_JS_SRC						= "/dwr/engine.js";
 	private static final String CACHE_JS_SRC 							= "javascript/MonsurCache.js";
 	
 	private static final String ELIGHT_CSS_SRC 							= "style/elight.css";
@@ -82,16 +92,16 @@ public class ELight extends IWBaseComponent {
 		output_division.setStyleClass(elight_output_class);
 		
 		HtmlTag left_span = (HtmlTag)application.createComponent(HtmlTag.COMPONENT_TYPE);
-		left_span.setValue("span");
-		left_span.setStyleClass("elleft");
+		left_span.setValue(span_tag);
+		left_span.setStyleClass(elight_elleft_class);
 		
 		WFDivision input_text_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		input_text_division.setId(elight_input_text_id);
 		input_text_division.setStyleClass(elight_input_text_class+" blurred");
 		
 		HtmlTag right_span = (HtmlTag)application.createComponent(HtmlTag.COMPONENT_TYPE);
-		right_span.setValue("span");
-		right_span.setStyleClass("elright");
+		right_span.setValue(span_tag);
+		right_span.setStyleClass(elight_elright_class);
 		
 		WFDivision reset_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
 		reset_division.setStyleClass("elreset resetnotworking");
@@ -106,24 +116,24 @@ public class ELight extends IWBaseComponent {
 		results_and_pointer_division.setId(elight_results_and_pointer_id);
 		
 		WFDivision header_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		header_division.setStyleClass("as_header");
+		header_division.setStyleClass(elight_as_header_class);
 		
 		WFDivision header_left_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		header_left_corner_division.setStyleClass("as_corner_left");
+		header_left_corner_division.setStyleClass(elight_as_left_corner_class);
 		WFDivision footer_left_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		footer_left_corner_division.setStyleClass("as_corner_left");
+		footer_left_corner_division.setStyleClass(elight_as_left_corner_class);
 		WFDivision header_right_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		header_right_corner_division.setStyleClass("as_corner_right");
+		header_right_corner_division.setStyleClass(elight_as_right_corner_class);
 		WFDivision footer_right_corner_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		footer_right_corner_division.setStyleClass("as_corner_right");
+		footer_right_corner_division.setStyleClass(elight_as_right_corner_class);
 		
 		WFDivision bar_division1 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		bar_division1.setStyleClass("as_bar");
+		bar_division1.setStyleClass(elight_as_bar_class);
 		WFDivision bar_division2 = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		bar_division2.setStyleClass("as_bar");
+		bar_division2.setStyleClass(elight_as_bar_class);
 		
 		WFDivision footer_division = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
-		footer_division.setStyleClass("as_footer");
+		footer_division.setStyleClass(elight_as_footer_class);
 		
 		header_division.add(header_left_corner_division);
 		header_division.add(bar_division1);
@@ -135,7 +145,7 @@ public class ELight extends IWBaseComponent {
 		if(hidden) {
 			HtmlGraphicImage search_button = (HtmlGraphicImage) application.createComponent(HtmlGraphicImage.COMPONENT_TYPE);
 			search_button.setId(elight_search_button_id);
-			search_button.setValue(IWMainApplication.getIWMainApplication(context).getBundle(IW_BUNDLE_IDENTIFIER).getImageURI(ELIGHT_SEARCH_BUTTON_SRC));
+			search_button.setValue(IWMainApplication.getIWMainApplication(context).getBundle(IW_BUNDLE_IDENTIFIER).getImageURI(ELIGHT_SEARCH_BUTTON_IMG));
 			
 			input_division.add(search_button);
 		}
@@ -145,7 +155,7 @@ public class ELight extends IWBaseComponent {
 		search_input.setStyleClass(elight_search_input_class);
 		search_input.setAutocomplete("off");
 		search_input.setAccesskey("s");
-//		TODO: check if accessd. then expand (slidein)
+//		TODO: check if accessd. then expand (slidein), if hidden
 
 		input_text_division.add(left_span);
 		input_text_division.add(search_input);
@@ -188,7 +198,7 @@ public class ELight extends IWBaseComponent {
 	}
 	
 	protected Web2Business getWeb2Service(IWApplicationContext iwc) {
-		
+
 		return (Web2Business) SpringBeanLookup.getInstance().getSpringBean(iwc, Web2Business.class);
 	}
 	
@@ -208,15 +218,15 @@ public class ELight extends IWBaseComponent {
 				
 				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, ELIGHT__SEARCH_RESULTS_JS_SRC);
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DWR_ENGINE_SRC);
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, ELIGHT_SEARCH_RESULTS_JS_SRC);
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DWR_ENGINE_JS_SRC);
 				
 				resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, 
 						new StringBuilder("var elight_working_uri = '")
-						.append(bundle.getImageURI(ELIGHT_WORKING_SRC))
+						.append(bundle.getImageURI(ELIGHT_WORKING_IMG))
 						.append("';\n")
 						.append("var elight_search_uri = '")
-						.append(bundle.getImageURI(ELIGHT_SEARCH_BUTTON_SRC))
+						.append(bundle.getImageURI(ELIGHT_SEARCH_BUTTON_IMG))
 						.append("';\n")
 						.append("var elight_pu_param = new Array(")
 						.append(constructPluginsUsedArrayValues(plugins_used))
@@ -225,10 +235,10 @@ public class ELight extends IWBaseComponent {
 						.append(hidden ? "true" : "false")
 						.append(";\n")
 						.append("var elight_input_field_initial_value = '")
-						.append("Search")//TODO: localize
+						.append(bundle.getLocalizedString("input_field.default", "Search"))
 						.append("';\n")
 						.append("var elight_site_img_uri = '")
-						.append(bundle.getImageURI(ELIGHT_SITE_ICON))
+						.append(bundle.getImageURI(ELIGHT_SITE_IMG))
 						.append("';")
 						.toString()
 				);

@@ -57,12 +57,6 @@ div#elight .search-wrapper input.g-prettysearch {
 	height: 20px;
 }
 
-/*
-div#elight .search-wrapper input.safari {
-	width: 160px;
-}
-*/
-
 /* elight > elinput > div > search-wrapper > g-prettysearch */
 div#elight div.search-wrapper.blurred input.g-prettysearch {
 	color: #7E7E7E;
@@ -199,18 +193,8 @@ div#elightResultsAndPointer div.as_footer
 	position: relative;
 	height: 6px;
 	padding: 0 6px;
-/*	background-image: url(../images/ul_corner_tr.png);
-	background-position: top right;
-	background-repeat: no-repeat;
-*/
 	overflow: hidden;
 }
-
-/*div#elightResultsAndPointer div.as_footer
-{
-	background-image: url(../images/ul_corner_br.png);
-}
-*/
 
 div#elightResultsAndPointer div.as_header div.as_corner_left,
 div#elightResultsAndPointer div.as_footer div.as_corner_left
