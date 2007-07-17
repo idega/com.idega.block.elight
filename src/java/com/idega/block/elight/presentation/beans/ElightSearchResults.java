@@ -173,6 +173,8 @@ public class ElightSearchResults implements Serializable {
 				factory = DocumentBuilderFactory.newInstance();
 				factory.setNamespaceAware(false);
 				factory.setValidating(false);
+				factory.setAttribute("http://apache.org/xml/properties/dom/document-class-name",
+				"org.apache.xerces.dom.DocumentImpl");
 			}
 			return factory.newDocumentBuilder();
 			
