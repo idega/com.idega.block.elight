@@ -28,9 +28,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  *
- * Last modified: $Date: 2007/07/17 13:33:29 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/17 15:55:28 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -154,6 +154,7 @@ public class ELight extends IWBaseComponent {
 		HtmlInputText search_input = (HtmlInputText) application.createComponent(HtmlInputText.COMPONENT_TYPE);
 		search_input.setId(elight_search_input_id);
 		search_input.setStyleClass(elight_search_input_class);
+		search_input.setOnkeypress("return !isEnterEvent(event);");
 		search_input.setAutocomplete("off");
 		search_input.setAccesskey("s");
 //		TODO: check if accessd. then expand (slidein), if hidden
