@@ -180,8 +180,7 @@ public class ElightSearchResults implements Serializable {
 			return factory.newDocumentBuilder();
 			
 		} catch (Exception e) {
-			// TODO: log
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Error while parsing creating document builder", e);
 			return null;
 		}
 	}
