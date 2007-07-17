@@ -22,7 +22,6 @@ import com.idega.core.search.business.SearchResult;
 import com.idega.core.search.data.SimpleSearchQuery;
 import com.idega.core.search.presentation.Searcher;
 import com.idega.data.StringInputStream;
-import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 
@@ -51,11 +50,8 @@ public class ElightSearchResults implements Serializable {
 		
 		Collection<SearchPlugin> plugins = SearchPluginManager.getInstance().getAllSearchPluginsInitialized(iwc.getIWMainApplication());
 		
-		if (plugins == null || plugins.isEmpty()) {
-		
-			IWBundle bundle = IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER);
-			return getMessageToTheUser(bundle.getLocalizedString("none_plugins_found", "None plugins found"));
-		}
+		if (plugins == null || plugins.isEmpty())
+			return getMessageToTheUser(IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc).getLocalizedString("none_plugins_found", "None plugins found"));
 		
 		Map query_map = new HashMap();
 		
@@ -69,11 +65,8 @@ public class ElightSearchResults implements Serializable {
 		
 		DocumentBuilder doc_builder = getDocumentBuilder();
 		
-		if(doc_builder == null) {
-			
-			IWBundle bundle = IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER);
-			return getMessageToTheUser(bundle.getLocalizedString("err.internal", "Sorry, internal error occured. Please, report to administrators."));
-		}
+		if(doc_builder == null)
+			return getMessageToTheUser(IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc).getLocalizedString("err.internal", "Sorry, internal error occured. Please, report to administrators."));
 			
 		for (SearchPlugin plugin : plugins) {
 			
@@ -132,7 +125,7 @@ public class ElightSearchResults implements Serializable {
 						
 					} catch (Exception e) {
 						
-						logger.log(Level.SEVERE, "Error while parsing result contents. Search result name: "+result.getSearchResultName()+". Skipping..", e);
+						logger.log(Level.SEVERE, "Error while parsing result contents. Search result name: "+result.getSearchResultName()+". Result content tried to parse:\n"+result.getSearchResultAbstract()+"\nSkipping..", e);
 						continue;
 					}
 					
@@ -154,10 +147,8 @@ public class ElightSearchResults implements Serializable {
 			}
 		}
 		
-		if(typed_search_results.values().isEmpty()) {
-			IWBundle bundle = IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER);
-			return getMessageToTheUser(bundle.getLocalizedString("no_results_found", "No results found"));
-		}
+		if(typed_search_results.values().isEmpty())
+			return getMessageToTheUser(IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc).getLocalizedString("no_results_found", "No results found"));
 		
 		return typed_search_results.values();
 	}

@@ -21,15 +21,16 @@ import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
+import com.idega.presentation.IWContext;
 import com.idega.util.CoreUtil;
 import com.idega.webface.WFDivision;
 
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  *
- * Last modified: $Date: 2007/07/17 09:55:09 $ by $Author: civilis $
+ * Last modified: $Date: 2007/07/17 13:33:29 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -235,7 +236,7 @@ public class ELight extends IWBaseComponent {
 						.append(hidden ? "true" : "false")
 						.append(";\n")
 						.append("var elight_input_field_initial_value = '")
-						.append(bundle.getLocalizedString("input_field.default", "Search"))
+						.append(bundle.getResourceBundle(IWContext.getIWContext(context)).getLocalizedString("input_field.default", "Search"))
 						.append("';\n")
 						.append("var elight_site_img_uri = '")
 						.append(bundle.getImageURI(ELIGHT_SITE_IMG))
