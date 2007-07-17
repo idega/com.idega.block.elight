@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.io.IOUtils;
 import com.idega.block.elight.presentation.ELight;
 import com.idega.core.search.business.Search;
 import com.idega.core.search.business.SearchPlugin;
@@ -21,7 +22,6 @@ import com.idega.core.search.business.SearchQuery;
 import com.idega.core.search.business.SearchResult;
 import com.idega.core.search.data.SimpleSearchQuery;
 import com.idega.core.search.presentation.Searcher;
-import com.idega.data.StringInputStream;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWContext;
 
@@ -116,13 +116,14 @@ public class ElightSearchResults implements Serializable {
 					
 					try {
 						
-						elight_result.setContents(doc_builder.parse(new StringInputStream(
-								new StringBuilder(contents_xml_part1)
-								.append(result.getSearchResultAbstract())
-								.append(contents_xml_part2)
-								.toString()
-						)));
-						
+						elight_result.setContents(doc_builder.parse(
+								
+								IOUtils.toInputStream(
+										new StringBuilder(contents_xml_part1)
+										.append(result.getSearchResultAbstract())
+										.append(contents_xml_part2)
+										.toString(), "UTF-8")
+						));
 					} catch (Exception e) {
 						
 						logger.log(Level.SEVERE, "Error while parsing result contents. Search result name: "+result.getSearchResultName()+". Result content tried to parse:\n"+result.getSearchResultAbstract()+"\nSkipping..", e);
