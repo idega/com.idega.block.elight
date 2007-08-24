@@ -53,13 +53,9 @@ public class ElightSearchResults implements Serializable {
 		if (plugins == null || plugins.isEmpty())
 			return getMessageToTheUser(IWMainApplication.getIWMainApplication(iwc).getBundle(ELight.IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc).getLocalizedString("none_plugins_found", "None plugins found"));
 		
-		Map query_map = new HashMap();
-		
-		if(!query.endsWith("*") && !query.endsWith("?"))
-			query = query+"*";
-			
-		query_map.put(getSimpleSearchParameterName(), query);
-		SearchQuery search_query = new SimpleSearchQuery(query_map);
+		Map qMap = new HashMap();
+		qMap.put(getSimpleSearchParameterName(), query);
+		SearchQuery search_query = new SimpleSearchQuery(qMap);
 		
 		Map<String, List<ElightSearchResult>> typed_search_results = new HashMap<String, List<ElightSearchResult>>();
 		
