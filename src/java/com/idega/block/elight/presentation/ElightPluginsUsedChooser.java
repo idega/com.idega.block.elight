@@ -10,9 +10,9 @@ import com.idega.presentation.ui.AbstractChooser;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2007/06/15 13:20:26 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/14 10:50:14 $ by $Author: civilis $
  *
  */
 public class ElightPluginsUsedChooser extends AbstractChooser {
@@ -33,7 +33,7 @@ public class ElightPluginsUsedChooser extends AbstractChooser {
 		return plugins_used;
 	}
 	
-	public Class getChooserWindowClass() {
+	public Class<ElightPluginsUsedBlock> getChooserWindowClass() {
 		return ElightPluginsUsedBlock.class;
 	}
 	
@@ -42,7 +42,7 @@ public class ElightPluginsUsedChooser extends AbstractChooser {
 	}
 	
 	@Override
-	protected String getChooserHelperVarName() {
+	public String getChooserHelperVarName() {
 		return "elight_chooser_helper";
 	}
 }
