@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -28,9 +29,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  *
- * Last modified: $Date: 2007/07/17 15:55:28 $ by $Author: civilis $
+ * Last modified: $Date: 2007/10/20 20:12:52 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -175,7 +176,9 @@ public class ELight extends IWBaseComponent {
 		elight_div.add(input_division);
 		elight_div.add(output_division);
 		 
-		getFacets().put(elight_id, elight_div);
+		@SuppressWarnings("unchecked")
+		Map<String, UIComponent> facets = (Map<String, UIComponent>)getFacets();
+		facets.put(elight_id, elight_div);
 		
 		addClientResources(context);
 	}
