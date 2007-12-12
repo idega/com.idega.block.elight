@@ -29,9 +29,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  *
- * Last modified: $Date: 2007/10/20 20:12:52 $ by $Author: civilis $
+ * Last modified: $Date: 2007/12/12 10:41:24 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -204,7 +204,7 @@ public class ELight extends IWBaseComponent {
 	
 	protected Web2Business getWeb2Service(IWApplicationContext iwc) {
 
-		return (Web2Business) SpringBeanLookup.getInstance().getSpringBean(iwc, Web2Business.class);
+		return SpringBeanLookup.getInstance().getSpringBean(iwc, Web2Business.class);
 	}
 	
 	protected void addClientResources(FacesContext context) {
