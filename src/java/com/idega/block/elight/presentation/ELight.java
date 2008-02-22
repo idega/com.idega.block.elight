@@ -23,15 +23,16 @@ import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
+import com.idega.util.CoreConstants;
 import com.idega.util.CoreUtil;
 import com.idega.webface.WFDivision;
 
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  *
- * Last modified: $Date: 2007/12/12 10:41:24 $ by $Author: civilis $
+ * Last modified: $Date: 2008/02/22 10:21:43 $ by $Author: alexis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -64,7 +65,6 @@ public class ELight extends IWBaseComponent {
 	
 	private static final String ELIGHT_JS_SRC 							= "javascript/elight.js";
 	private static final String ELIGHT_SEARCH_RESULTS_JS_SRC 			= "/dwr/interface/ElightSearchResults.js";
-	private static final String DWR_ENGINE_JS_SRC						= "/dwr/engine.js";
 	private static final String CACHE_JS_SRC 							= "javascript/MonsurCache.js";
 	
 	private static final String ELIGHT_CSS_SRC 							= "style/elight.css";
@@ -224,7 +224,7 @@ public class ELight extends IWBaseComponent {
 				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
 				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, ELIGHT_SEARCH_RESULTS_JS_SRC);
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, DWR_ENGINE_JS_SRC);
+				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreConstants.DWR_ENGINE_SCRIPT);
 				
 				resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, 
 						new StringBuilder("var elight_working_uri = '")
