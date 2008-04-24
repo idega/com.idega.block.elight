@@ -15,19 +15,20 @@ import com.idega.presentation.ui.util.AbstractChooserBlock;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2007/10/14 10:50:14 $ by $Author: civilis $
+ * Last modified: $Date: 2008/04/24 23:19:07 $ by $Author: laddi $
  *
  */
 public class ElightPluginsUsedBlock extends AbstractChooserBlock {
 
 	private List<String> values;
 	
+	@Override
+	@SuppressWarnings("cast")
 	public void main(IWContext iwc) {
 		Layer checkboxes = new Layer();
 		
-		@SuppressWarnings("unchecked")
 		Collection<SearchPlugin> plugins = (Collection<SearchPlugin>)SearchPluginManager.getInstance().getAllSearchPluginsInitialized(iwc.getIWMainApplication());
 		
 		if(values == null)

@@ -30,9 +30,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  *
- * Last modified: $Date: 2008/02/22 10:21:43 $ by $Author: alexis $
+ * Last modified: $Date: 2008/04/24 23:19:07 $ by $Author: laddi $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -79,6 +79,7 @@ public class ELight extends IWBaseComponent {
 		setRendererType(null);
 	}
 	
+	@SuppressWarnings("cast")
 	@Override
 	protected void initializeComponent(FacesContext context) {
 		
@@ -176,7 +177,6 @@ public class ELight extends IWBaseComponent {
 		elight_div.add(input_division);
 		elight_div.add(output_division);
 		 
-		@SuppressWarnings("unchecked")
 		Map<String, UIComponent> facets = (Map<String, UIComponent>)getFacets();
 		facets.put(elight_id, elight_div);
 		
