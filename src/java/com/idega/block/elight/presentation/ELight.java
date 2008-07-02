@@ -17,22 +17,21 @@ import org.apache.myfaces.renderkit.html.util.AddResource;
 import org.apache.myfaces.renderkit.html.util.AddResourceFactory;
 
 import com.idega.block.web2.business.Web2Business;
-import com.idega.business.SpringBeanLookup;
-import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.IWBaseComponent;
 import com.idega.presentation.IWContext;
 import com.idega.util.CoreConstants;
 import com.idega.util.CoreUtil;
+import com.idega.util.expression.ELUtil;
 import com.idega.webface.WFDivision;
 
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  *
- * Last modified: $Date: 2008/05/22 08:05:15 $ by $Author: valdas $
+ * Last modified: $Date: 2008/07/02 19:23:30 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -202,57 +201,48 @@ public class ELight extends IWBaseComponent {
 		}
 	}
 	
-	protected Web2Business getWeb2Service(IWApplicationContext iwc) {
-
-		return SpringBeanLookup.getInstance().getSpringBean(iwc, Web2Business.class);
-	}
-	
 	protected void addClientResources(FacesContext context) {
 		
 		IWMainApplication iwma = IWMainApplication.getIWMainApplication(context);
-		Web2Business web2_business = getWeb2Service(iwma.getIWApplicationContext());
+		Web2Business web2 = ELUtil.getInstance().getBean(Web2Business.class);
 		
-		if (web2_business != null) {
+		try {
+			AddResource resource = AddResourceFactory.getInstance(context);
+			resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreUtil.getCoreBundle().getVirtualPathWithFileNameString(CACHE_JS_SRC));
+			resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2.getBundleURIToMootoolsLib());
+			resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2.getBundleURIToJQueryLib());
+			resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "jQuery.noConflict();");
 			
-			try {
-				AddResource resource = AddResourceFactory.getInstance(context);
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreUtil.getCoreBundle().getVirtualPathWithFileNameString(CACHE_JS_SRC));
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToMootoolsLib());
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, web2_business.getBundleURIToJQueryLib());
-				resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, "jQuery.noConflict();");
-				
-				IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, ELIGHT_SEARCH_RESULTS_JS_SRC);
-				resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreConstants.DWR_ENGINE_SCRIPT);
-				
-				resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, 
-						new StringBuilder("var elight_working_uri = '")
-						.append(bundle.getImageURI(ELIGHT_WORKING_IMG))
-						.append("';\n")
-						.append("var elight_search_uri = '")
-						.append(bundle.getImageURI(ELIGHT_SEARCH_BUTTON_IMG))
-						.append("';\n")
-						.append("var elight_pu_param = new Array(")
-						.append(constructPluginsUsedArrayValues(plugins_used))
-						.append(");\n")
-						.append("var elight_hidden = ")
-						.append(hidden ? "true" : "false")
-						.append(";\n")
-						.append("var elight_input_field_initial_value = '")
-						.append(bundle.getResourceBundle(IWContext.getIWContext(context)).getLocalizedString("input_field.default", "Search"))
-						.append("';\n")
-						.append("var elight_site_img_uri = '")
-						.append(bundle.getImageURI(ELIGHT_SITE_IMG))
-						.append("';")
-						.toString()
-				);
-				resource.addStyleSheet(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_CSS_SRC));
-				
-			} catch (RemoteException e) {
-				e.printStackTrace();
-//				TODO: log
-			}
+			IWBundle bundle = iwma.getBundle(IW_BUNDLE_IDENTIFIER);
+			resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_JS_SRC));
+			resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, ELIGHT_SEARCH_RESULTS_JS_SRC);
+			resource.addJavaScriptAtPosition(context, AddResource.HEADER_BEGIN, CoreConstants.DWR_ENGINE_SCRIPT);
+			
+			resource.addInlineScriptAtPosition(context, AddResource.HEADER_BEGIN, 
+					new StringBuilder("var elight_working_uri = '")
+					.append(bundle.getImageURI(ELIGHT_WORKING_IMG))
+					.append("';\n")
+					.append("var elight_search_uri = '")
+					.append(bundle.getImageURI(ELIGHT_SEARCH_BUTTON_IMG))
+					.append("';\n")
+					.append("var elight_pu_param = new Array(")
+					.append(constructPluginsUsedArrayValues(plugins_used))
+					.append(");\n")
+					.append("var elight_hidden = ")
+					.append(hidden ? "true" : "false")
+					.append(";\n")
+					.append("var elight_input_field_initial_value = '")
+					.append(bundle.getResourceBundle(IWContext.getIWContext(context)).getLocalizedString("input_field.default", "Search"))
+					.append("';\n")
+					.append("var elight_site_img_uri = '")
+					.append(bundle.getImageURI(ELIGHT_SITE_IMG))
+					.append("';")
+					.toString()
+			);
+			resource.addStyleSheet(context, AddResource.HEADER_BEGIN, bundle.getVirtualPathWithFileNameString(ELIGHT_CSS_SRC));
+			
+		} catch (RemoteException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
