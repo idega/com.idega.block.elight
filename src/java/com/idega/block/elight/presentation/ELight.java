@@ -29,9 +29,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  *
- * Last modified: $Date: 2008/07/02 19:23:30 $ by $Author: civilis $
+ * Last modified: $Date: 2008/12/03 03:45:59 $ by $Author: laddi $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -78,10 +78,8 @@ public class ELight extends IWBaseComponent {
 		setRendererType(null);
 	}
 	
-	@SuppressWarnings("cast")
 	@Override
 	protected void initializeComponent(FacesContext context) {
-		
 		Application application = context.getApplication();
 		
 		WFDivision elight_div = (WFDivision)application.createComponent(WFDivision.COMPONENT_TYPE);
