@@ -29,9 +29,9 @@ import com.idega.webface.WFDivision;
 /**
  * 
  * @author <a href="civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  *
- * Last modified: $Date: 2008/12/03 03:45:59 $ by $Author: laddi $
+ * Last modified: $Date: 2008/12/13 15:16:52 $ by $Author: civilis $
  *
  */
 public class ELight extends IWBaseComponent {
@@ -174,7 +174,7 @@ public class ELight extends IWBaseComponent {
 		elight_div.add(input_division);
 		elight_div.add(output_division);
 		 
-		Map<Object, UIComponent> facets = getFacets();
+		Map<String, UIComponent> facets = getFacets();
 		facets.put(elight_id, elight_div);
 		
 		addClientResources(context);
